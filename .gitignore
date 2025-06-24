@@ -1,0 +1,6 @@
+vendor/
+index.php
+package.json
+package-lock.json
+dev-scripts/
+node_modules/

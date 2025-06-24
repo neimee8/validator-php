@@ -1,0 +1,44 @@
+{
+    "all": [
+        "mixed", "?mixed",
+        "int", "?int",
+        "float", "?float",
+        "string", "?string",
+        "bool", "?bool",
+        "array", "?array",
+        "callable", "?callable",
+        "object", "?object",
+        "resource", "?resource",
+        "iterable", "?iterable",
+        "regex", "null"
+    ],
+    "by_group": {
+        "general": [
+            "bool", "?bool",
+            "null"
+        ],
+        "numeric": [
+            "int", "?int",
+            "float", "?float"
+        ],
+        "string": [
+            "string", "?string",
+            "regex"
+        ],
+        "array": [
+            "array", "?array"
+        ],
+        "callable": [
+            "callable", "?callable"
+        ],
+        "object": [
+            "object", "?object"
+        ],
+        "resource": [
+            "resource", "?resource"
+        ],
+        "iterable": [
+            "iterable", "?iterable"
+        ]
+    }
+}

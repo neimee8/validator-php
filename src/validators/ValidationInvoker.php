@@ -1,13 +1,13 @@
 <?php
 
-namespace Libs\Server\Validation\Validators;
+namespace Neimee8\ValidatorPhp\Validators;
 
-use Libs\Server\Validation\SchemaManager;
-use Libs\Server\Validation\Validator;
+use Neimee8\ValidatorPhp\SchemaManager;
+use Neimee8\ValidatorPhp\Validator;
 
-use Libs\Server\Validation\Exceptions\ValidationRuleException;
-use Libs\Server\Validation\Exceptions\ValidationValueException;
-use Libs\Server\Validation\Exceptions\ValidationParamsException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationRuleException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationValueException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
 
 trait ValidationInvoker {
     public static function validate(string $rule, mixed $value, mixed $params) {

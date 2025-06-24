@@ -1,6 +1,6 @@
 <?php
 
-namespace Libs\Server\Validation\Enums;
+namespace Neimee8\ValidatorPhp\Enums;
 
 enum NumType {
     case INT;

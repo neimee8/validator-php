@@ -1,12 +1,12 @@
 <?php
 
-namespace Libs\Server\Validation\Validators;
+namespace Neimee8\ValidatorPhp\Validators;
 
 use \ReflectionMethod;
 use \ReflectionFunction;
 use \ReflectionFunctionAbstract;
 
-use Libs\Server\Validation\Enums\ArgType;
+use Neimee8\ValidatorPhp\Enums\ArgType;
 
 class ValidatorCallable {
     use ValidationInvoker;

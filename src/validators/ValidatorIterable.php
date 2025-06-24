@@ -1,6 +1,6 @@
 <?php
 
-namespace Libs\Server\Validation\Validators;
+namespace Neimee8\ValidatorPhp\Validators;
 
 use \Traversable;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Libs\Server\Validation\Validators;
+namespace Neimee8\ValidatorPhp\Validators;
 
 use \ReflectionClass;
 
-use Libs\Server\Validation\Enums\VarType;
-use Libs\Server\Validation\Enums\MethodType;
+use Neimee8\ValidatorPhp\Enums\VarType;
+use Neimee8\ValidatorPhp\Enums\MethodType;
 
 class ValidatorObject {
     use ValidationInvoker;

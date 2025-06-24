@@ -1,11 +1,11 @@
 <?php
 
-namespace Libs\Server\Validation;
+namespace Neimee8\ValidatorPhp;
 
 use \FilesystemIterator;
 
-use Libs\Server\Validation\Exceptions\ValidationRuleGroupException;
-use Libs\Server\Validation\Exceptions\ValidationSchemaFileException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationRuleGroupException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationSchemaFileException;
 
 class SchemaManager {
     use StaticConfig;
@@ -15,7 +15,7 @@ class SchemaManager {
 
         $allowed_schemas = [];
 
-        foreach (new FilesystemIterator(self::$cnf -> SCHEMAS_DIR) as $file) {
+        foreach (new FilesystemIterator(__DIR__ . '/../' . self::$cnf -> SCHEMAS_DIR) as $file) {
             if ($file -> isFile()) {
                 $allowed_schemas[] = substr($file -> getFilename(), 0, -strlen('_schema.json'));
             }
@@ -25,7 +25,7 @@ class SchemaManager {
             throw new ValidationSchemaFileException(schema_file: $schema);
         }
 
-        $path = self::$cnf -> SCHEMAS_DIR . $schema . '_schema.json';
+        $path = __DIR__ . '/../' . self::$cnf -> SCHEMAS_DIR . $schema . '_schema.json';
 
         return json_decode(file_get_contents($path), $assoc);
     }

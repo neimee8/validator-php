@@ -1,8 +1,8 @@
 <?php
 
-namespace Libs\Server\Validation\Exceptions;
+namespace Neimee8\ValidatorPhp\Exceptions;
 
-use Libs\Server\Validation\SchemaManager;
+use Neimee8\ValidatorPhp\SchemaManager;
 
 class ValidationParamsException extends ValidationException {
     public function __construct(

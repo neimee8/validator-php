@@ -1,8 +1,6 @@
 <?php
 
-namespace Libs\Server\Validation\Validators;
-
-use Libs\Server\Validation\SchemaManager;
+namespace Neimee8\ValidatorPhp\Validators;
 
 class ValidatorGeneral {
     use ValidationInvoker;

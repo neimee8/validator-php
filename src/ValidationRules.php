@@ -1,10 +1,10 @@
 <?php
 
-namespace Libs\Server\Validation;
+namespace Neimee8\ValidatorPhp;
 
-use Libs\Server\Validation\Exceptions\ValidationException;
-use Libs\Server\Validation\Exceptions\ValidationRuleException;
-use Libs\Server\Validation\Exceptions\ValidationModeException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationRuleException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationModeException;
 
 class ValidationRules {
     public const THROW_EXCEPTION = 1 << 0;

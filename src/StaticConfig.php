@@ -1,8 +1,8 @@
 <?php
 
-namespace Libs\Server\Validation;
+namespace Neimee8\ValidatorPhp;
 
-use Libs\Server\Validation\Config;
+use Neimee8\ValidatorPhp\Config;
 
 trait StaticConfig {
     private static Config $cnf;

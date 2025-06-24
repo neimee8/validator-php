@@ -1,8 +1,8 @@
 <?php
 
-namespace Libs\Server\Validation\Validators;
+namespace Neimee8\ValidatorPhp\Validators;
 
-use Libs\Server\Validation\Enums\NumType;
+use Neimee8\ValidatorPhp\Enums\NumType;
 
 class ValidatorString {
     use ValidationInvoker;

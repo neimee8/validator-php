@@ -1,10 +1,10 @@
 <?php
 
-namespace Libs\Server\Validation\Exceptions;
+namespace Neimee8\ValidatorPhp\Exceptions;
 
 use \FilesystemIterator;
 
-use Libs\Server\Validation\StaticConfig;
+use Neimee8\ValidatorPhp\StaticConfig;
 
 class ValidationSchemaFileException extends ValidationException {
     use StaticConfig;
@@ -23,7 +23,7 @@ class ValidationSchemaFileException extends ValidationException {
 
         $schemas = [];
 
-        foreach (new FilesystemIterator(self::$cnf -> SCHEMAS_DIR) as $file) {
+        foreach (new FilesystemIterator(__DIR__ . '/../../' . self::$cnf -> SCHEMAS_DIR) as $file) {
             if ($file -> isFile()) {
                 $schemas[] = substr($file -> getFilename(), 0, -strlen('_schema.json'));
             }

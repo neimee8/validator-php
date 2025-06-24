@@ -1,6 +1,6 @@
 <?php
 
-namespace Libs\Server\validation\Enums;
+namespace Neimee8\ValidatorPhp\Enums;
 
 enum ArgType {
     case REQ;

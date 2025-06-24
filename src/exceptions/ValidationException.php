@@ -1,6 +1,6 @@
 <?php
 
-namespace Libs\Server\Validation\Exceptions;
+namespace Neimee8\ValidatorPhp\Exceptions;
 
 use \Exception;
 

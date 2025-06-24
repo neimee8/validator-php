@@ -1,9 +1,9 @@
 <?php
 
-namespace Libs\Server\Validation;
+namespace Neimee8\ValidatorPhp;
 
-use Libs\Server\Validation\Exceptions\ValidationParamsException;
-use Libs\Server\Validation\Exceptions\ValidationValueException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
+use Neimee8\ValidatorPhp\Exceptions\ValidationValueException;
 
 class Validator {
     use StaticConfig;

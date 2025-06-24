@@ -1,6 +1,6 @@
 <?php
 
-namespace Neimee8\ValidatorPhp\Validators;
+namespace Neimee8\ValidatorPhp\Validators\Helpers;
 
 use Neimee8\ValidatorPhp\SchemaManager;
 use Neimee8\ValidatorPhp\Validator;

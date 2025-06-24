@@ -2,6 +2,8 @@
 
 namespace Neimee8\ValidatorPhp\Validators;
 
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
+
 class ValidatorNumeric {
     use ValidationInvoker;
 

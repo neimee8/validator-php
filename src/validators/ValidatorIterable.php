@@ -4,6 +4,8 @@ namespace Neimee8\ValidatorPhp\Validators;
 
 use \Traversable;
 
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
+
 class ValidatorIterable {
     use ValidationInvoker;
 

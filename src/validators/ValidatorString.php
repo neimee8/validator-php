@@ -3,32 +3,11 @@
 namespace Neimee8\ValidatorPhp\Validators;
 
 use Neimee8\ValidatorPhp\Enums\NumType;
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorStringHelper;
 
 class ValidatorString {
-    use ValidationInvoker;
-
-    private static function strRegex(string $string, string $pattern): bool {
-        return preg_match($pattern, $string) === 1;
-    }
-
-    private function strFilter(string $string, ...$filter): bool {
-        return filter_var($string, ...$filter) !== false;
-    }
-
-    private function strNum(string $string, NumType $num_type, string $rule): bool {
-        $local_rule = "str_$num_type";
-        $is_num = self::$local_rule($string, [true]);
-
-        if (!$is_num) {
-            return false;
-        }
-
-        $casted = $num_type === NumType::INT
-            ? (int) $string
-            : (float) $string;
-
-        return ValidatorNumeric::validate("num_$rule", $casted, [true]);
-    }
+    use ValidationInvoker, ValidatorStringHelper;
 
     private static function str_len(string $value, array $params): bool {
         $reference = $params[0]; // non negative int

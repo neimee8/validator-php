@@ -6,19 +6,7 @@
                 {
                     "types": ["array"],
                     "arr_is_indexed": true,
-                    "arr_is_subset": [
-                        "mixed", "?mixed",
-                        "int", "?int",
-                        "float", "?float",
-                        "string", "?string",
-                        "bool", "?bool",
-                        "array", "?array",
-                        "callable", "?callable",
-                        "object", "?object",
-                        "resource", "?resource",
-                        "iterable", "?iterable",
-                        "regex", "null"
-                    ]
+                    "arr_is_subset": "%schema:data_types>all%"
                 }
             ]
         },

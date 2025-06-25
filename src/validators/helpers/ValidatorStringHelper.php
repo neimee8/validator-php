@@ -15,7 +15,7 @@ trait ValidatorStringHelper {
     }
 
     private static function strNum(string $string, NumType $num_type, string $rule): bool {
-        $local_rule = "str_$num_type";
+        $local_rule = 'str_' . $num_type -> value;
         $is_num = self::$local_rule($string, [true]);
 
         if (!$is_num) {
@@ -26,6 +26,6 @@ trait ValidatorStringHelper {
             ? (int) $string
             : (float) $string;
 
-        return ValidatorNumeric::validate("num_$rule", $casted, [true]);
+        return ValidatorNumeric::validate('num_' . $num_type -> value, $casted, [true]);
     }
 }

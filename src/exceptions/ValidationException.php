@@ -12,6 +12,8 @@ class ValidationException extends Exception {
     public const CODE_INVALID_VALUE_TYPE = 1003;
     public const CODE_INVALID_PARAMS = 1004;
     public const CODE_INVALID_MODE = 1005;
+    public const CODE_INVALID_MAP_TYPE = 1006;
+    public const CODE_INVALID_ENTRY = 1007;
 
     public const CODE_SCHEMA_FILE_NOT_FOUND = 2001;
 
@@ -21,8 +23,12 @@ class ValidationException extends Exception {
     public mixed $params;
     public mixed $schema_file;
     public mixed $mode;
+    public mixed $map_type;
+    public mixed $entry;
 
     public string $exception = 'ValidationException';
+
+    public array $trace;
 
     public function __construct(
         string $message = '',
@@ -32,7 +38,9 @@ class ValidationException extends Exception {
         mixed $value = null,
         mixed $params = null,
         mixed $schema_file = null,
-        mixed $mode = null
+        mixed $mode = null,
+        mixed $map_type = null,
+        mixed $entry = null
     ) {
         $this -> rule = $rule;
         $this -> rule_group = $rule_group;
@@ -41,7 +49,12 @@ class ValidationException extends Exception {
         $this -> schema_file = $schema_file;
         $this -> mode = $mode;
         $this -> code = $code;
+        $this -> map_type = $map_type;
+        $this -> entry = $entry;
+
         $this -> message = $message === '' ? $this -> exception : $message;
+
+        $this -> trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
         parent::__construct(message: $this -> message, code: $this -> code);
     }
@@ -73,9 +86,19 @@ class ValidationException extends Exception {
             $response['mode'] = $this -> mode;
         }
 
+        if ($this -> map_type !== null) {
+            $response['map_type'] = $this -> map_type;
+        }
+
+        if ($this -> entry !== null) {
+            $response['entry'] = $this -> entry;
+        }
+
         $response['exception'] = $this -> exception;
         $response['code'] = $this -> code;
         $response['message'] = $this -> message;
+
+        $response['trace'] = $this -> trace;
 
         return $response;
     }

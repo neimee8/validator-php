@@ -135,15 +135,15 @@ class SchemaManager {
     }
 
     public static function getRuleSchema(): array {
-        return self::getDataFromSchemaFile('validation_rules');
+        return self::getDataFromSchemaFile('validation_rules', resolve_variables: false);
     }
 
     public static function getListOfGroups(): array {
-        return array_keys(self::getDataFromSchemaFile('validation_rules'));
+        return array_keys(self::getDataFromSchemaFile('validation_rules', resolve_variables: false));
     }
 
     public static function getListOfRules(): array {
-        $schema = self::getDataFromSchemaFile('validation_rules');
+        $schema = self::getDataFromSchemaFile('validation_rules', resolve_variables: false);
         $list = [];
 
         foreach (array_values($schema) as $rules) {
@@ -154,7 +154,7 @@ class SchemaManager {
     }
 
     public static function getRuleParamFormat(): array {
-        $schema = self::getDataFromSchemaFile('validation_rules');
+        $schema = self::getDataFromSchemaFile('validation_rules', resolve_variables: false);
         $rule_param_format = [];
 
         foreach (array_values($schema) as $rules) {
@@ -167,7 +167,7 @@ class SchemaManager {
     }
 
     public static function getRuleParamFormatByGroup(string $rule_group): array {
-        $schema = self::getDataFromSchemaFile('validation_rules');
+        $schema = self::getDataFromSchemaFile('validation_rules', resolve_variables: false);
         $rule_param_format = [];
 
         foreach ($schema as $group => $rules) {
@@ -185,23 +185,8 @@ class SchemaManager {
         return $rule_param_format;
     }
 
-    public static function getListOfRequiredRules(): array {
-        $schema = self::getDataFromSchemaFile('validation_rules');
-        $list = [];
-
-        foreach (array_values($schema) as $rules) {
-            foreach ($rules as $rule => $format) {
-                if (isset($format['required']) && $format['required']) {
-                    $list[] = $rule;
-                }
-            }
-        }
-
-        return $list;
-    }
-
     public static function getGroupsOfRules(): array {
-        $schema = self::getDataFromSchemaFile('validation_rules');
+        $schema = self::getDataFromSchemaFile('validation_rules', resolve_variables: false);
         $groups = [];
 
         foreach ($schema as $group => $rules) {
@@ -214,13 +199,13 @@ class SchemaManager {
     }
 
     public static function getDataTypes(): array {
-        $schema = self::getDataFromSchemaFile('data_types');
+        $schema = self::getDataFromSchemaFile('data_types', resolve_variables: false);
 
         return $schema['all'];
     }
 
     public static function getGroupsOfTypes(): array {
-        $schema = self::getDataFromSchemaFile('data_types');
+        $schema = self::getDataFromSchemaFile('data_types', resolve_variables: false);
         $groups = [];
 
         foreach ($schema['by_group'] as $group => $types) {
@@ -233,7 +218,7 @@ class SchemaManager {
     }
 
     public static function getTypesOfGroup(string $rule_group, bool $nullable = true): array {
-        $schema = self::getDataFromSchemaFile('data_types');
+        $schema = self::getDataFromSchemaFile('data_types', resolve_variables: false);
         $types = $schema['by_group'][$rule_group] ?? null;
 
         if ($types === null) {
@@ -251,7 +236,7 @@ class SchemaManager {
     }
 
     public static function getValidators(): array {
-        $schema = self::getDataFromSchemaFile('validators');
+        $schema = self::getDataFromSchemaFile('validators', resolve_variables: false);
 
         return $schema;
     }

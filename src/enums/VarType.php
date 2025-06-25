@@ -2,8 +2,8 @@
 
 namespace Neimee8\ValidatorPhp\Enums;
 
-enum VarType {
-    case STATIC;
-    case NOT_STATIC;
-    case ALL;
+enum VarType: string {
+    case STATIC = 'static';
+    case NOT_STATIC = 'not_static';
+    case ALL = 'all';
 }

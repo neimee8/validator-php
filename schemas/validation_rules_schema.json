@@ -1,29 +1,47 @@
 {
     "general": {
         "types": {
-            "required": true,
             "params": [
                 {
-                    "types": ["array"],
-                    "arr_is_indexed": true,
-                    "arr_is_subset": "%schema:data_types>all%"
+                    "type": "array",
+                    "arr_is_indexed": true
+                }
+            ]
+        },
+        "type": {
+            "params": [
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "not_types": {
+            "params": [
+                {
+                    "type": "array",
+                    "arr_is_indexed": true
+                }
+            ]
+        },
+        "not_type": {
+            "params": [
+                {
+                    "type": "string"
                 }
             ]
         },
         "value_in": {
-            "required": false,
             "params": [
                 {
-                    "types": ["array"],
+                    "type": "array",
                     "arr_is_indexed": true
                 }
             ]
         },
         "value_not_in": {
-            "required": false,
             "params": [
                 {
-                    "types": ["array"],
+                    "type": "array",
                     "arr_is_indexed": true
                 }
             ]
@@ -31,49 +49,41 @@
     },
     "numeric": {
         "num_positive": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "num_positive_zero": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "num_negative": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "num_negative_zero": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "num_more_than": {
-            "required": false,
             "params": [
                 {"types": ["int", "float"]}
             ]
         },
         "num_more_or_equal": {
-            "required": false,
             "params": [
                 {"types": ["int", "float"]}
             ]
         },
         "num_less_than": {
-            "required": false,
             "params": [
                 {"types": ["int", "float"]}
             ]
         },
         "num_less_or_equal": {
-            "required": false,
             "params": [
                 {"types": ["int", "float"]}
             ]
@@ -81,821 +91,706 @@
     },
     "string": {
         "str_len": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "str_min_len": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "str_max_len": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "str_numeric": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_alphabetic": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_contains_special": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_json": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_email": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_url": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_ip": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_ipv4": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_ipv6": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_base64": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_lowercase": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_uppercase": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_ascii": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_utf8": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_html": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_int": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_float": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_int_positive": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_int_negative": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
-        "str_int_positive_zero": {
-            "required": false,
+        "str_int_num_positive_zero": {
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_int_negative_zero": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_float_positive": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_float_negative": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
-        "str_float_positive_zero": {
-            "required": false,
+        "str_float_num_positive_zero": {
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_float_negative_zero": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "str_contains": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "str_not_contains": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "str_regex_match": {
-            "required": false,
             "params": [
-                {"types": ["regex"]}
+                {"type": "regex"}
             ]
         },
         "str_not_regex_match": {
-            "required": false,
             "params": [
-                {"types": ["regex"]}
+                {"type": "regex"}
             ]
         }
     },
     "array": {
         "arr_len": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "arr_min_len": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "arr_max_len": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "arr_intersects": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_is_subset": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_is_strict_subset": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_is_superset": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_is_strict_superset": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_no_intersection": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_not_subset": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_not_strict_subset": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_not_superset": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
         "arr_not_strict_superset": {
-            "required": false,
             "params": [
-                {"types": ["array"]}
+                {"type": "array"}
             ]
         },
 
         "arr_contains_key": {
-            "required": false,
             "params": [
                 {"types": ["string", "int"]}
             ]
         },
         "arr_contains_value": {
-            "required": false,
             "params": [
-                {"types": ["mixed"]}
+                {"type": "mixed"}
             ]
         },
         "arr_not_contains_key": {
-            "required": false,
             "params": [
                 {"types": ["string", "int"]}
             ]
         },
         "arr_not_contains_value": {
-            "required": false,
             "params": [
-                {"types": ["mixed"]}
+                {"type": "mixed"}
             ]
         },
         "arr_is_assoc": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "arr_is_indexed": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "arr_is_nested": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "arr_is_unique": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         }
     },
     "callable": {
         "callable_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_min_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_max_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_req_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_min_req_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_max_req_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_not_req_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_min_not_req_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_max_not_req_arg_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "callable_contains_arg": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "callable_contains_req_arg": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "callable_contains_not_req_arg": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "callable_not_contains_arg": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "callable_not_contains_req_arg": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "callable_not_contains_not_req_arg": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         }
     },
     "object": {
         "obj_not_static_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_min_not_static_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_max_not_static_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_static_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_min_static_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_max_static_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_all_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_min_all_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_max_all_var_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_not_static_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_min_not_static_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_max_not_static_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_static_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_min_static_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_max_static_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_all_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_min_all_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_max_all_method_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_class_implement_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_class_min_implement_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_class_max_implement_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_class_trait_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_class_min_trait_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_class_max_trait_count": {
-            "required": false,
             "params": [
                 {
-                    "types": ["int"],
-                    "positive_zero": true
+                    "type": "int",
+                    "num_positive_zero": true
                 }
             ]
         },
         "obj_class_has_parent": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "obj_contains_not_static_var": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_contains_static_var": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_contains_var": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_contains_not_static_method": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_contains_static_method": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_contains_method": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_class_has_specific_parent": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_class_has_specific_implement": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_class_has_specific_trait": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_not_contains_not_static_var": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_not_contains_static_var": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_not_contains_var": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_not_contains_not_static_method": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_not_contains_static_method": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_not_contains_method": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_class_has_no_specific_parent": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_class_has_no_specific_implement": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "obj_class_has_no_specific_trait": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         }
     },
     "resource": {
         "resource_type_match": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         },
         "resource_type_not_match": {
-            "required": false,
             "params": [
-                {"types": ["string"]}
+                {"type": "string"}
             ]
         }
     },
     "iterable": {
         "iterable_is_array": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         },
         "iterable_is_traversable": {
-            "required": false,
             "params": [
-                {"types": ["bool"]}
+                {"type": "bool"}
             ]
         }
     }

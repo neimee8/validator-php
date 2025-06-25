@@ -1,6 +1,6 @@
 {
     "all": [
-        "mixed", "?mixed",
+        "mixed", "null",
         "int", "?int",
         "float", "?float",
         "string", "?string",
@@ -10,7 +10,7 @@
         "object", "?object",
         "resource", "?resource",
         "iterable", "?iterable",
-        "regex", "null"
+        "regex", "class-string"
     ],
     "by_group": {
         "general": [
@@ -23,7 +23,7 @@
         ],
         "string": [
             "string", "?string",
-            "regex"
+            "regex", "class-string"
         ],
         "array": [
             "array", "?array"

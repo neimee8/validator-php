@@ -19,11 +19,8 @@ class ValidationRuleException extends ValidationException {
 
         if ($rule !== null) {
             $this -> message .= 'Invalid rule: ' . $this -> rule . '. ';
-        } else {
-            $this -> message .= 'Required tules should be set. ';
         }
 
-        $this -> message .= 'List of required rules: ' . implode(', ', SchemaManager::getListOfRequiredRules()) . '. ';
         $this -> message .= 'List of valid rules: ' . implode(', ', SchemaManager::getListOfRules()) . '.';
 
         parent::__construct(

@@ -69,12 +69,20 @@ class ValidatorGeneral {
         }
 
         if (in_array('string', $value_types, strict: true)) {
+            // for regex strings
             set_error_handler(function() {}, E_WARNING);
             $regex_check = @preg_match($value, '');
             restore_error_handler();
 
             if ($regex_check !== false) {
                 $value_types[] = 'regex';
+            }
+
+            // for class-string strings
+            $class_string_check = preg_match('/^\\\\?([A-Za-z_][A-Za-z0-9_]*\\\\)*[A-Za-z_][A-Za-z0-9_]*$/', $value);
+
+            if ($class_string_check === 0) {
+                $value_types[] = 'class-string';
             }
         }
 
@@ -83,12 +91,30 @@ class ValidatorGeneral {
         }
 
         foreach ($unique_types as $type) {
-            if (class_exists($type) && $value instanceof $type) {
+            if (
+                is_string($type)
+                && (class_exists($type) || trait_exists($type) || interface_exists($type))
+                && $value instanceof $type
+            ) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private static function type(mixed $value, array $params): bool {
+        $type = $params[0]; // string type
+
+        return self::types($value, [[$type]]);
+    }
+
+    private static function not_types(mixed $value, array $params): bool {
+        return !self::types($value, $params);
+    }
+
+    private static function not_type(mixed $value, array $params): bool {
+        return !self::type($value, $params);
     }
 
     private static function value_in(mixed $value, array $params): bool {

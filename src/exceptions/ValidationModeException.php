@@ -2,6 +2,8 @@
 
 namespace Neimee8\ValidatorPhp\Exceptions;
 
+use Neimee8\ValidatorPhp\Enums\ValidationMode;
+
 class ValidationModeException extends ValidationException {
     public function __construct(
         string $message = '',
@@ -16,10 +18,24 @@ class ValidationModeException extends ValidationException {
         $this -> message = $message !== '' ? 'Additional message: ' . $message . '. ' : '';
 
         if ($mode !== null) {
-            $this -> message .= 'Invalid mode: ' . $mode. '.';
+            $this -> message .= 'Invalid mode: ' . $mode -> name . '.';
         }
 
-        $this -> message .= 'Mode must be either THROW_EXCEPTION or SILENT, defined as class constants';
+        $modes = ValidationMode::cases();
+        $last_index = count($modes) - 1;
+        $modes_string = '';
+
+        foreach ($modes as $i => $mode) {
+            $modes_string .= $mode -> name;
+
+            if ($i < $last_index - 1) {
+                $modes_string .= ', ';
+            } elseif ($i === $last_index - 1) {
+                $modes_string .= ' or ';
+            }
+        }
+
+        $this -> message .= "Mode must be one of: $modes_string, defined as class constants.";
 
         parent::__construct(
             $this -> message,

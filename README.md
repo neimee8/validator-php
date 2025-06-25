@@ -1,4 +1,4 @@
-#🚧 This project is a work in progress
+# 🚧 This project is a work in progress
 
 While the main functionality is implemented and appears to work, the code hasn't been refactored yet, and there are no tests or documentation.
 Expect bugs, especially in edge cases.

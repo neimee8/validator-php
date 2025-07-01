@@ -70,7 +70,9 @@ class ValidationMap {
 
     public function addEntry(array $entry): void {
         if ($this -> map_type !== self::MAP_INDEXED) {
-            throw new ValidationMapTypeException('You should use MAP_INDEXED to call this method, used ' . $this -> map_type -> name);
+            throw new ValidationMapTypeException(
+                message: 'You should use MAP_INDEXED to call this method, used ' . $this -> map_type -> name
+            );
         }
 
         self::prepareEntry($entry);
@@ -80,7 +82,9 @@ class ValidationMap {
 
     public function addAssocEntry(int|string $key, array $entry): void {
         if ($this -> map_type !== self::MAP_ASSOC) {
-            throw new ValidationMapTypeException('You should use MAP_ASSOC to call this method, used ' . $this -> map_type -> name);
+            throw new ValidationMapTypeException(
+                message: 'You should use MAP_ASSOC to call this method, used ' . $this -> map_type -> name
+            );
         }
 
         self::prepareEntry($entry);
@@ -155,7 +159,9 @@ class ValidationMap {
             'result' => null,
             'options' => [
                 'validation_mode' => $validation_mode -> name,
-                'default_logic_mode' => $default_logic_mode !== null ? $default_logic_mode -> name : self::AND -> name,
+                'default_logic_mode' => $default_logic_mode !== null 
+                    ? $default_logic_mode -> name
+                    : self::AND -> name,
                 'map_type' => $this -> map_type -> name
             ],
             'report' => []
@@ -169,7 +175,11 @@ class ValidationMap {
             $validation_result = true;
 
             try {
-                $validation_result = $entry[1] -> validate($entry[0], $validation_mode, $default_logic_mode);
+                $validation_result = $entry[1] -> validate(
+                    $entry[0],
+                    $validation_mode,
+                    $default_logic_mode
+                );
             } catch (ValidationException $e) {
                 $this -> result['result'] = false;
                 $this -> result['report'][$key] = $validation_result['report'];

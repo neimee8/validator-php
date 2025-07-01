@@ -194,7 +194,13 @@ class ValidationRules {
             )
         ) {
             throw new ValidationLogicModeException(
-                message: 'only ' . implode(', ', $this -> allowed_default_logic_modes) . ' are allowed as default logic modes',
+                message: 'only '
+                    . implode(
+                        ', ',
+                        $this -> allowed_default_logic_modes
+                    )
+                    . ' are allowed as default logic modes',
+
                 logic_mode: $default_logic_mode
             );
         }
@@ -307,7 +313,9 @@ class ValidationRules {
                 ) {
                     $this -> result['result'] = false;
 
-                    throw new ValidationRuleNodeException(message: 'XOR rule block should contain 1 or 2 rule nodes');
+                    throw new ValidationRuleNodeException(
+                        message: 'XOR rule block should contain 1 or 2 rule nodes'
+                    );
                 }
 
                 $intermediate_result = self::handleRules(
@@ -372,14 +380,17 @@ class ValidationRules {
                 switch ($logic_mode) {
                     case self::AND:
                         $result = $result && $intermediate_result;
+                        
                         break;
                     case self::OR:
                         $result = $result || $intermediate_result;
+
                         break;
                     case self::XOR:
                         $result = 
                             (!$result && $intermediate_result)
                             || ($result && !$intermediate_result);
+
                         break;
                 }
             }

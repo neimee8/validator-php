@@ -115,10 +115,26 @@ class ValidatorString {
         return $must_be === mb_check_encoding($value, 'UTF-8');
     }
 
-    private static function str_html(string $value, array $params): bool {
+    private static function str_contains_html(string $value, array $params): bool {
         $must_be = $params[0]; // true or false
 
         return $must_be === ($value === strip_tags($value));
+    }
+
+    private static function str_is_regex(string $value, array $params): bool {
+        $must_be = $params[0]; // true or false
+
+        set_error_handler(function() {}, E_WARNING);
+        $regex_check = @preg_match($value, '');
+        restore_error_handler();
+
+        return $must_be === ($regex_check !== false);
+    }
+
+    private static function str_is_class_string(string $value, array $params): bool {
+        $must_be = $params[0]; // true or false
+
+        return $must_be === self::strRegex($value, '/^\\\\?([A-Za-z_][A-Za-z0-9_]*\\\\)*[A-Za-z_][A-Za-z0-9_]*$/');
     }
 
     private static function str_int(string $value, array $params): bool {

@@ -18,7 +18,15 @@ class ValidationMapTypeException extends ValidationException {
         $this -> message = $message !== '' ? 'Additional message: ' . $message . '. ' : '';
 
         if ($map_type !== null) {
-            $this -> message .= 'Invalid map type: ' . $map_type -> name . '.';
+            $this -> message .= 'Invalid map type: ';
+
+            if ($map_type instanceof ValidationMapType) {
+                $this -> message .= $map_type -> name;
+            } else {
+                $this -> message .= json_encode($map_type, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            }
+
+            $this -> message .= '. ';
         }
 
         $map_types = ValidationMapType::cases();

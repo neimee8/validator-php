@@ -11,9 +11,12 @@ class ValidationException extends Exception {
     public const CODE_INVALID_RULE = 1002;
     public const CODE_INVALID_VALUE_TYPE = 1003;
     public const CODE_INVALID_PARAMS = 1004;
-    public const CODE_INVALID_MODE = 1005;
+    public const CODE_INVALID_VALIDATION_MODE = 1005;
     public const CODE_INVALID_MAP_TYPE = 1006;
     public const CODE_INVALID_ENTRY = 1007;
+    public const CODE_INVALID_RULE_PATH = 1008;
+    public const CODE_INVALID_LOGIC_MODE = 1009;
+    public const CODE_INVALID_RULE_NODE = 1010;
 
     public const CODE_SCHEMA_FILE_NOT_FOUND = 2001;
 
@@ -22,9 +25,12 @@ class ValidationException extends Exception {
     public mixed $value;
     public mixed $params;
     public mixed $schema_file;
-    public mixed $mode;
+    public mixed $validation_mode;
     public mixed $map_type;
     public mixed $entry;
+    public mixed $rule_path;
+    public mixed $logic_mode;
+    public mixed $rule_node;
 
     public string $exception = 'ValidationException';
 
@@ -38,19 +44,25 @@ class ValidationException extends Exception {
         mixed $value = null,
         mixed $params = null,
         mixed $schema_file = null,
-        mixed $mode = null,
+        mixed $validation_mode = null,
         mixed $map_type = null,
-        mixed $entry = null
+        mixed $entry = null,
+        mixed $rule_path = null,
+        mixed $logic_mode = null,
+        mixed $rule_node = null
     ) {
         $this -> rule = $rule;
         $this -> rule_group = $rule_group;
         $this -> value = $value;
         $this -> params = $params;
         $this -> schema_file = $schema_file;
-        $this -> mode = $mode;
+        $this -> validation_mode = $validation_mode;
         $this -> code = $code;
         $this -> map_type = $map_type;
         $this -> entry = $entry;
+        $this -> rule_path = $rule_path;
+        $this -> logic_mode = $logic_mode;
+        $this -> rule_node = $rule_node;
 
         $this -> message = $message === '' ? $this -> exception : $message;
 
@@ -82,8 +94,8 @@ class ValidationException extends Exception {
             $response['schema_file'] = $this -> schema_file;
         }
 
-        if ($this -> mode !== null) {
-            $response['mode'] = $this -> mode;
+        if ($this -> validation_mode !== null) {
+            $response['validation_mode'] = $this -> validation_mode;
         }
 
         if ($this -> map_type !== null) {
@@ -92,6 +104,18 @@ class ValidationException extends Exception {
 
         if ($this -> entry !== null) {
             $response['entry'] = $this -> entry;
+        }
+
+        if ($this -> rule_path !== null) {
+            $response['rule_path'] = $this -> rule_path;
+        }
+
+        if ($this -> logic_mode !== null) {
+            $response['logic_mode'] = $this -> logic_mode;
+        }
+
+        if ($this -> rule_node !== null) {
+            $response['rule_node'] = $this -> rule_node;
         }
 
         $response['exception'] = $this -> exception;

@@ -5,3 +5,6 @@ index.php
 dev-scripts/
 node_modules/
 composer.lock
+*_depr.*
+/schemas/
+/.vscode/

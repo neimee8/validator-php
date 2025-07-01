@@ -20,7 +20,7 @@ class ValidationValueException extends ValidationException {
         $this -> message = $message !== '' ? 'Additional message: ' . $message . '. ' : '';
 
         if ($value !== null) {
-            $this -> message .= 'Invalid value: ' . $this -> value;
+            $this -> message .= 'Invalid value: ' . json_encode($this -> value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         }
 
         if ($rule !== null) {

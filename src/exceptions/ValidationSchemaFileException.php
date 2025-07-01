@@ -2,37 +2,32 @@
 
 namespace Neimee8\ValidatorPhp\Exceptions;
 
-use \FilesystemIterator;
-
 use Neimee8\ValidatorPhp\StaticConfig;
 
 class ValidationSchemaFileException extends ValidationException {
-    use StaticConfig;
-
     public function __construct(
         string $message = '',
         int $code = self::CODE_SCHEMA_FILE_NOT_FOUND,
         mixed $schema_file = null,
+        ?array $allowed_schemas = null
     ) {
-        self::initConfig();
-
         $this -> exception = 'ValidationSchemaFileException';
 
-        $this -> schema_file = $schema_file . '_schema.json';
+        $this -> schema_file = $schema_file . '_schema.php';
         $this -> code = $code;
-
-        $schemas = [];
-
-        foreach (new FilesystemIterator(__DIR__ . '/../../' . self::$cnf -> SCHEMAS_DIR) as $file) {
-            if ($file -> isFile()) {
-                $schemas[] = substr($file -> getFilename(), 0, -strlen('_schema.json'));
-            }
-        }
 
         $this -> message = $message !== '' ? 'Additional message: ' . $message . '. ' : '';
         $this -> message .= 'Schema file not found: ';
-        $this -> message .= $schema_file !== null ? $this -> schema_file : '[schema file]';
-        $this -> message .= '. List of valid schemas: ' . implode(', ', $schemas) . '.';
+
+        if ($schema_file !== null && is_scalar($schema_file)) {
+            $this -> message .= (string) $schema_file;
+        } else {
+            $this -> message .= '[schema file].';
+        }
+
+        if ($allowed_schemas !== null) {
+            $this -> message .= ' List of valid schemas: ' . implode(', ', $allowed_schemas) . '.';
+        }
 
         parent::__construct(
             $this -> message,

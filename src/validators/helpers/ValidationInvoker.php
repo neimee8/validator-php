@@ -60,20 +60,20 @@ trait ValidationInvoker {
             throw new ValidationParamsException(rule: $rule, params: $params);
         }
 
-        $params_validation = true;
-
         for ($i = 0; $i < count($params); $i++) {
-            foreach ($rule_param_format[$i] as $param_validation_rule => $param_validation_params) {
-                if (!Validator::$param_validation_rule($params[$i], [$param_validation_params])) {
-                    $params_validation = false;
 
-                    break 2;
+            foreach ($rule_param_format[$i] as $param_validation_rule => $param_validation_params) {
+                $param_to_validate = $params[$i];
+                $param_validation = Validator::$param_validation_rule(
+                    $param_to_validate,
+                    [$param_validation_params]
+                );
+
+                if (!$param_validation) {
+                    throw new ValidationParamsException(rule: $rule, params: $params);
                 }
             }
-        }
 
-        if (!$params_validation) {
-            throw new ValidationParamsException(rule: $rule, params: $params);
         }
     }
 

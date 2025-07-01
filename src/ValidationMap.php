@@ -3,6 +3,7 @@
 namespace Neimee8\ValidatorPhp;
 
 use Neimee8\ValidatorPhp\Enums\ValidationMode;
+use Neimee8\ValidatorPhp\Enums\LogicMode;
 use Neimee8\ValidatorPhp\Enums\ValidationMapType;
 
 use Neimee8\ValidatorPhp\Exceptions\ValidationModeException;
@@ -17,10 +18,16 @@ class ValidationMap {
     public const MAP_INDEXED = ValidationMapType::MAP_INDEXED;
     public const MAP_ASSOC = ValidationMapType::MAP_ASSOC;
 
+    public const AND = LogicMode::AND;
+    public const OR = LogicMode::OR;
+    public const NOT = LogicMode::NOT;
+    public const XOR = LogicMode::XOR;
+
     private array $map = [];
     private ValidationMapType $map_type;
     private array $result = [
         'result' => null,
+        'options' => [],
         'report' => []
     ];
 
@@ -107,6 +114,10 @@ class ValidationMap {
         return $this -> result['result'];
     }
 
+    public function getOptions(): array {
+        return $this -> result['options'];
+    }
+
     public function getReport(): array {
         return $this -> result['report'];
     }
@@ -115,13 +126,21 @@ class ValidationMap {
         return array_key_exists($key, $this -> map);
     }
 
-    public function validate(ValidationMode $mode = self::THROW_EXCEPTION): array {
-        if (Validator::value_not_in($mode, ValidationMode::cases())) {
-            throw new ValidationModeException(mode: $mode);
+    public function validate(
+        ValidationMode $validation_mode = self::THROW_EXCEPTION,
+        ?LogicMode $default_logic_mode = null
+    ): array {
+        if (Validator::value_not_in($validation_mode, ValidationMode::cases())) {
+            throw new ValidationModeException(validation_mode: $validation_mode);
         }
 
         $this -> result = [
             'result' => null,
+            'options' => [
+                'validation_mode' => $validation_mode -> name,
+                'default_logic_mode' => $default_logic_mode !== null ? $default_logic_mode -> name : self::AND -> name,
+                'map_type' => $this -> map_type -> name
+            ],
             'report' => []
         ];
 
@@ -133,9 +152,10 @@ class ValidationMap {
             $validation_result = true;
 
             try {
-                $validation_result = $entry[1] -> validate($entry[0], $mode);
+                $validation_result = $entry[1] -> validate($entry[0], $validation_mode, $default_logic_mode);
             } catch (ValidationException $e) {
                 $this -> result['result'] = false;
+                $this -> result['report'][$key] = $validation_result['report'];
 
                 throw $e;
             }
@@ -157,10 +177,11 @@ class ValidationMap {
     public static function quickValidate(
         array $entries,
         ValidationMapType $map_type = self::MAP_ASSOC,
-        ValidationMode $mode = self::THROW_EXCEPTION
+        ValidationMode $validation_mode = self::THROW_EXCEPTION,
+        ?LogicMode $default_logic_mode = null
     ): array {
         $instance = new self($entries, $map_type);
 
-        return $instance -> validate($mode);
+        return $instance -> validate($validation_mode, $default_logic_mode);
     }
 }

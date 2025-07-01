@@ -102,10 +102,25 @@ class ValidationMap {
         $this -> map = [];
     }
 
-    public function clearEntry(int|string $key): void {
-        if ($this -> entryExists($key)) {
-            unset($this -> map[$key]);
+    public function clearEntry(int|string $key): bool {
+        if (!$this -> entryExists($key)) {
+            return false;
         }
+
+        unset($this -> map[$key]);
+        return true;
+    }
+
+    public function getMap(): array {
+        return $this -> map;
+    }
+
+    public function getEntry(int|string $key): ?array {
+        if (!$this -> entryExists($key)) {
+            return null;
+        }
+
+        return $this -> map[$key];
     }
 
     public function getFullResult(): array {

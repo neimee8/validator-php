@@ -58,7 +58,9 @@ class ValidationRules {
             );
         }
 
-        $this -> rules = array_merge($this -> rules, $rules);
+        foreach ($rules as $key => $value) {
+            $this->rules[$key] = $value;
+        }
     }
 
     public function clearRules(): void {
@@ -322,7 +324,7 @@ class ValidationRules {
                 $rule_path = [...$current_path, $rule];
                 $rule_path_str = implode('.', $rule_path);
 
-                $this -> result['report'][] = [
+                $report = [
                     'path' => $rule_path,
                     'path_str' => $rule_path_str,
                     'rule' => $rule,
@@ -333,15 +335,19 @@ class ValidationRules {
                 try {
                     $intermediate_result = Validator::$rule($value, $params);
 
-                    $this -> result['report'][] = [
+                    $report = [
+                        ...$report,
                         'result' => $intermediate_result,
                         'exception' => null
                     ];
                 } catch (ValidationException $e) {
-                    $this -> result['report'][] = [
+                    $report = [
+                        ...$report,
                         'result' => false,
                         'exception' => $e
                     ];
+
+                    $this -> result['report'][] = $report;
 
                     if ($validation_mode === ValidationMode::THROW_EXCEPTION) {
                         $this -> result['result'] = false;
@@ -351,6 +357,8 @@ class ValidationRules {
                         $intermediate_result = false;
                     }
                 }
+
+                $this -> result['report'][] = $report;
             }
 
             $logic_mode = match ($parent_logic_mode) {

@@ -47,11 +47,31 @@ class ValidationMap {
     }
 
     private static function prepareEntry(array &$entry): void {
+        // if (
+        //     !ValidationRules::quickValidate($entry, [
+        //         'type' => 'array',
+        //         'arr_is_indexed' => true,
+        //         'arr_len' => 2
+        //     ], ValidationRules::SILENT)['result']
+        // ) {
+        //     throw new ValidationEntryException(entry: $entry);
+        // }
+
+        // var_dump(ValidationRules::quickValidate($entry, [
+        //     ['NOT' => [
+        //         ['type' => 'array'],
+        //         ['arr_is_indexed' => true],
+        //         ['arr_len' => 2]
+        //     ]]
+        // ]));
+
         if (
-            !ValidationRules::quickValidate($entry, [
-                'type' => 'array',
-                'arr_is_indexed' => true,
-                'arr_len' => 2
+            ValidationRules::quickValidate($entry, [
+                ['NOT' => [
+                    ['type' => 'array'],
+                    ['arr_is_indexed' => true],
+                    ['arr_len' => 2]
+                ]]
             ], ValidationRules::SILENT)['result']
         ) {
             throw new ValidationEntryException(entry: $entry);

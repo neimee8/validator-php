@@ -68,24 +68,6 @@ class ValidatorGeneral {
             $value_types[] = 'null';
         }
 
-        // if (in_array('string', $value_types, strict: true)) {
-        //     // for regex strings
-        //     set_error_handler(function() {}, E_WARNING);
-        //     $regex_check = @preg_match($value, '');
-        //     restore_error_handler();
-
-        //     if ($regex_check !== false) {
-        //         $value_types[] = 'regex';
-        //     }
-
-        //     // for class-string strings
-        //     $class_string_check = preg_match('/^\\\\?([A-Za-z_][A-Za-z0-9_]*\\\\)*[A-Za-z_][A-Za-z0-9_]*$/', $value);
-
-        //     if ($class_string_check === 0) {
-        //         $value_types[] = 'class-string';
-        //     }
-        // }
-
         if (count(array_intersect($value_types, $unique_types)) > 0) {
             return true;
         }

@@ -8,3 +8,5 @@ composer.lock
 *_depr.*
 /schemas/
 /.vscode/
+.phpunit.result.cache
+coverage/

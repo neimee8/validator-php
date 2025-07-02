@@ -16,7 +16,16 @@ abstract class RuleTestCase extends TestCase
         ?string $message = null
     ): void {
         $result = Validator::$rule($value, $params);
-        $this -> assertTrue($result, $message ?? 'Expected rule ' . var_export($rule, true) . ' to pass for value: ' . var_export($value, true));
+        $this -> assertTrue(
+            $result,
+            $message
+            ?? 'Expected rule '
+            . var_export($rule, true)
+            . ' to pass for value: '
+            . var_export($value, true)
+            . ', params: '
+            . var_export($params, true)
+        );
     }
 
     protected function assertRuleFails(
@@ -26,7 +35,16 @@ abstract class RuleTestCase extends TestCase
         ?string $message = null
     ): void {
         $result = Validator::$rule($value, $params);
-        $this -> assertFalse($result, $message ?? 'Expected rule ' . var_export($rule, true) . ' to fail for value: ' . var_export($value, true));
+        $this -> assertFalse(
+            $result,
+            $message
+            ?? 'Expected rule '
+            . var_export($rule, true)
+            . ' to fail for value: '
+            . var_export($value, true)
+            . ', params: '
+            . var_export($params, true)
+        );
     }
 
     protected function assertRuleThrows(
@@ -39,6 +57,16 @@ abstract class RuleTestCase extends TestCase
         $this -> expectException($expectedException);
         Validator::$rule($value, $params);
 
-        $this -> fail($message ?? 'Expected rule ' . var_export($rule, true) . ' to throw $expectedException');
+        $this -> fail(
+            $message
+            ?? 'Expected rule '
+            . var_export($rule, true)
+            . ' to throw '
+            . $expectedException
+            . ' for value: '
+            . var_export($value, true)
+            . ', params: '
+            . var_export($params, true)
+        );
     }
 }

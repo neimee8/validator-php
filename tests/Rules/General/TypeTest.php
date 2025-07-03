@@ -10,137 +10,121 @@ use Neimee8\ValidatorPhp\Tests\Stubs\MyInterface;
 
 use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
 
-class TypesTest extends RuleTestCase {
+class TypeTest extends RuleTestCase {
     use DataTypeManager;
 
-    private function typesPassesDefault(
+    private function typePassesDefault(
         mixed $value,
-        string $type
+        array $types
     ): void {
-        $param_set = [
-            [$type],
-            ["?$type"],
-            ['mixed'],
-            self::getDataTypes()
-        ];
+        foreach ($types as $type) {
+            $param_set = [
+                $type,
+                "?$type",
+                'mixed'
+            ];
 
-        foreach ($param_set as $params) {
-            $this -> assertRulePasses(
-                rule: 'types',
-                value: $value, 
-                params: $params
-            );
+            foreach ($param_set as $params) {
+                $this -> assertRulePasses(
+                    rule: 'type',
+                    value: $value,
+                    params: $params
+                );
+            }
         }
     }
 
-    private function typesFailsDefault(
+    private function typeFailsDefault(
         mixed $value,
-        string $incompatible_type,
-        array $excluded_types,
+        array $types_to_filter,
         bool $filter_nullable = true
     ): void {
-        $param_set = [
-            [$incompatible_type],
-            self::filterDataTypes(
-                $excluded_types,
-                $filter_nullable
-            )
-        ];
+        $types = self::filterDataTypes(
+            $types_to_filter,
+            $filter_nullable
+        );
 
-        foreach ($param_set as $params) {
+        foreach ($types as $type) {
             $this -> assertRuleFails(
-                rule: 'types',
+                rule: 'type',
                 value: $value,
-                params: $params
-            );
-        }
-
-        if ($filter_nullable) {
-            $this -> assertRuleFails(
-                rule: 'types',
-                value: $value,
-                params: ["?$incompatible_type"]
+                params: $type
             );
         }
     }
 
     public function testIntPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: 0,
-            type: 'int'
+            types: ['int']
         );
     }
 
     public function testIntFails(): void {
-        $this -> typesFailsDefault(
-            value: 2,
-            incompatible_type: 'object',
-            excluded_types: ['int']
+        $this -> typeFailsDefault(
+            value: 0,
+            types_to_filter: ['int']
         );
     }
 
     public function testFloatPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: 0.5,
-            type: 'float'
+            types: ['float']
         );
     }
 
     public function testFloatFails(): void {
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: 0.5,
-            incompatible_type: 'object',
-            excluded_types: ['float']
+            types_to_filter: ['float']
         );
     }
 
     public function testStringPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: 'some_string',
-            type: 'string'
+            types: ['string']
         );
     }
 
     public function testStringFails(): void {
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: 'some_string',
-            incompatible_type: 'object',
-            excluded_types: ['string']
+            types_to_filter: ['string']
         );
     }
 
     public function testBoolPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: true,
-            type: 'bool'
+            types: ['bool']
         );
 
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: false,
-            type: 'bool'
+            types: ['bool']
         );
     }
 
     public function testBoolFails(): void {
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: true,
-            incompatible_type: 'object',
-            excluded_types: ['bool']
+            types_to_filter: ['bool']
         );
     }
 
     public function testArrayPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: [0, 1, 2],
-            type: 'array'
+            types: ['array', 'iterable']
         );
     }
 
     public function testArrayFails(): void {
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: [0, 1, 2],
-            incompatible_type: 'object',
-            excluded_types: ['array', 'iterable']
+            types_to_filter: ['array', 'iterable']
         );
     }
 
@@ -151,42 +135,40 @@ class TypesTest extends RuleTestCase {
         . 'callables.php';
 
         foreach ($callables as $callable) {
-            $this -> typesPassesDefault(
+            $this -> typePassesDefault(
                 value: $callable,
-                type: 'callable'
+                types: ['callable']
             );
         }
     }
 
     public function testCallableFails(): void {
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: fn () => true,
-            incompatible_type: 'bool',
-            excluded_types: ['callable', 'object']
+            types_to_filter: ['callable', 'object']
         );
     }
 
     public function testObjectPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: new class {},
-            type: 'object'
+            types: ['object']
         );
     }
 
     public function testObjectFails(): void {
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: new class {},
-            incompatible_type: 'string',
-            excluded_types: ['object']
+            types_to_filter: ['object']
         );
     }
 
     public function testResourcePasses(): void {
         $resource = fopen('php://memory', 'r');
-    
-        $this -> typesPassesDefault(
+
+        $this -> typePassesDefault(
             value: $resource,
-            type: 'resource'
+            types: ['resource']
         );
 
         fclose($resource);
@@ -195,10 +177,9 @@ class TypesTest extends RuleTestCase {
     public function testResourceFails(): void {
         $resource = fopen('php://memory', 'r');
 
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: $resource,
-            incompatible_type: 'string',
-            excluded_types: ['resource', 'object']
+            types_to_filter: ['resource', 'object']
         );
 
         fclose($resource);
@@ -211,9 +192,9 @@ class TypesTest extends RuleTestCase {
         . 'iterables.php';
 
         foreach ($iterables as $iterable) {
-            $this -> typesPassesDefault(
+            $this -> typePassesDefault(
                 value: $iterable,
-                type: 'iterable'
+                types: ['iterable']
             );
         }
     }
@@ -224,53 +205,45 @@ class TypesTest extends RuleTestCase {
         . self::$STUB_DIR
         . 'iterables.php';
 
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: $iterables['array'],
-            incompatible_type: 'string',
-            excluded_types: ['iterable', 'array']
+            types_to_filter: ['iterable', 'array']
         );
 
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: $iterables['generator'],
-            incompatible_type: 'string',
-            excluded_types: ['iterable', 'object']
+            types_to_filter: ['iterable', 'object']
         );
     }
 
     public function testInstancePasses(): void {
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: new MyClass(),
-            type: MyClass::class
+            types: [MyClass::class]
         );
 
-        $this -> typesPassesDefault(
+        $this -> typePassesDefault(
             value: new MyClass(),
-            type: MyInterface::class
+            types: [MyInterface::class]
         );
     }
 
     public function testNullPasses(): void {
-        $nullable_types = [
-            ...self::getNullableDataTypes(),
-            '?' . MyClass::class
-        ];
-
-        foreach ($nullable_types as $type) {
-            $this -> typesPassesDefault(
-                value: null,
-                type: $type
-            );
-        }
+        $this -> typePassesDefault(
+            value: null,
+            types:  [
+                ...self::getNullableDataTypes(),
+                '?' . MyClass::class
+            ]
+        );
     }
 
     public function testNullFails(): void {
         $nullable_types = self::getNullableDataTypes();
 
-        $this -> typesFailsDefault(
+        $this -> typeFailsDefault(
             value: null,
-            incompatible_type: 'string',
-            excluded_types: $nullable_types,
-            filter_nullable: false
+            types_to_filter: $nullable_types
         );
     }
 
@@ -279,20 +252,15 @@ class TypesTest extends RuleTestCase {
             null,
             0,
             0.5,
-            'some_string',
             true,
+            [1, 2, 3],
             fn () => true,
             new class {},
-            ['some_string' => 'some_string'],
-            [
-                ['some_string', 'some_string'],
-                ['some_string', 'some_string']
-            ]
         ];
 
         foreach ($param_set as $params) {
             $this -> assertRuleThrows(
-                rule: 'types',
+                rule: 'type',
                 value: null,
                 params: $params,
                 expected_exception: ValidationParamsException::class

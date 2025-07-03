@@ -75,7 +75,7 @@ class ValidatorGeneral {
         foreach ($unique_types as $type) {
             if (
                 is_string($type)
-                && (class_exists($type) || trait_exists($type) || interface_exists($type))
+                && (class_exists($type) || interface_exists($type))
                 && $value instanceof $type
             ) {
                 return true;

@@ -8,6 +8,8 @@ use Neimee8\ValidatorPhp\Validator;
 use Neimee8\ValidatorPhp\Exceptions\ValidationException;
 
 abstract class RuleTestCase extends TestCase {
+    protected static string $STUB_DIR = 'tests/stubs/';
+
     protected function assertRulePasses(
         mixed $rule,
         mixed $value,
@@ -50,10 +52,10 @@ abstract class RuleTestCase extends TestCase {
         mixed $rule,
         mixed $value,
         mixed $params = [],
-        string $expectedException = ValidationException::class,
+        string $expected_exception = ValidationException::class,
         ?string $message = null
     ): void {
-        $this -> expectException($expectedException);
+        $this -> expectException($expected_exception);
         Validator::$rule($value, $params);
 
         $this -> fail(
@@ -61,7 +63,7 @@ abstract class RuleTestCase extends TestCase {
             ?? 'Expected rule '
             . var_export($rule, true)
             . ' to throw '
-            . $expectedException
+            . $expected_exception
             . ' for value: '
             . var_export($value, true)
             . ', params: '

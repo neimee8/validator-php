@@ -32,10 +32,6 @@ class SchemaManager {
         return $data;
     }
 
-    public static function getRuleSchema(): array {
-        return self::getDataFromSchemaFile('validation_rules');
-    }
-
     public static function getListOfGroups(): array {
         return array_keys(self::getDataFromSchemaFile('validation_rules'));
     }
@@ -100,19 +96,6 @@ class SchemaManager {
         $schema = self::getDataFromSchemaFile('data_types');
 
         return $schema['all'];
-    }
-
-    public static function getGroupsOfTypes(): array {
-        $schema = self::getDataFromSchemaFile('data_types');
-        $groups = [];
-
-        foreach ($schema['by_group'] as $group => $types) {
-            foreach ($types as $type) {
-                $groups[$type] = $group;
-            }
-        }
-
-        return $groups;
     }
 
     public static function getTypesOfGroup(string $rule_group, bool $nullable = true): array {

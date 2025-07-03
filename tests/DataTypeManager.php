@@ -26,7 +26,7 @@ trait DataTypeManager {
         '?iterable',
     ];
 
-    private static function filterDataTypes(array $types) {
+    private static function filterDataTypes(array $types): array {
         return array_values(
             array_filter(
                 self::$ALL_DATA_TYPES,

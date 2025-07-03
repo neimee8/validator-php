@@ -35,7 +35,9 @@ class ValidationParamsException extends ValidationException {
             if ($rule !== null) {
                 $rule_format = SchemaManager::getRuleParamFormat() ?? null;
 
-                $this -> message .= ' Params should satisfy these rules: ' . json_encode($rule_format[$rule], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '.';
+                $this -> message .= ' Params should satisfy these rules: '
+                . json_encode($rule_format[$rule], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+                . '. A single parameter must not be wrapped in an array, while multiple parameters must be.';
             }
         } else {
             $this -> message .= 'Missing required params.';

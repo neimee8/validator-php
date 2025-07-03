@@ -7,8 +7,7 @@ use \PHPUnit\Framework\TestCase;
 use Neimee8\ValidatorPhp\Validator;
 use Neimee8\ValidatorPhp\Exceptions\ValidationException;
 
-abstract class RuleTestCase extends TestCase
-{
+abstract class RuleTestCase extends TestCase {
     protected function assertRulePasses(
         mixed $rule,
         mixed $value,

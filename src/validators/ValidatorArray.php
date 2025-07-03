@@ -3,6 +3,7 @@
 namespace Neimee8\ValidatorPhp\Validators;
 
 use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
+use Neimee8\ValidatorPhp\Validators\ValidatorGeneral;
 
 class ValidatorArray {
     use ValidationInvoker;
@@ -125,5 +126,31 @@ class ValidatorArray {
         $unique_array = array_unique($value);
 
         return $must_be === (count($value) === count($unique_array));
+    }
+
+    private static function arr_value_types(array $value, array $params): bool {
+        $types = $params[0]; // array of string types
+
+        foreach ($value as $element) {
+            if (!ValidatorGeneral::validate('types', $element, [$types])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static function arr_value_type(array $value, array $params): bool {
+        $type = $params[0]; // string type
+
+        return self::arr_value_types($value, [[$type]]);
+    }
+
+    private static function arr_not_value_types(array $value, array $params): bool {
+        return !self::arr_value_types($value, $params);
+    }
+
+    private static function arr_not_value_type(array $value, array $params): bool {
+        return !self::arr_value_type($value, $params);
     }
 }

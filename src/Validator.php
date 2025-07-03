@@ -9,11 +9,11 @@ class Validator {
     private const VALIDATORS_NAMESPACE = '\\Neimee8\\ValidatorPhp\\Validators\\';
 
     public static function __callStatic(string $rule, array $args) {
-        if (!isset($args[0])) {
+        if (!array_key_exists(0, $args)) {
             throw new ValidationValueException(message: 'Value should be set');
         }
 
-        if (!isset($args[1])) {
+        if (!array_key_exists(1, $args)) {
             throw new ValidationParamsException();
         }
 

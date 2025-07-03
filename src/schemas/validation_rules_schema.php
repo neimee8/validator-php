@@ -8,6 +8,7 @@ return [
                 [
                     'type' => 'array',
                     'arr_is_indexed' => true,
+                    'arr_value_type' => 'string',
                 ],
             ],
         ],
@@ -25,6 +26,7 @@ return [
                 [
                     'type' => 'array',
                     'arr_is_indexed' => true,
+                    'arr_value_type' => 'string',
                 ],
             ],
         ],
@@ -584,6 +586,42 @@ return [
             'params' => [
                 [
                     'type' => 'bool',
+                ],
+            ],
+        ],
+
+        'arr_value_types' => [
+            'params' => [
+                [
+                    'type' => 'array',
+                    'arr_is_indexed' => true,
+                    'arr_value_type' => 'string',
+                ],
+            ],
+        ],
+
+        'arr_value_type' => [
+            'params' => [
+                [
+                    'type' => 'string',
+                ],
+            ],
+        ],
+
+        'arr_not_value_types' => [
+            'params' => [
+                [
+                    'type' => 'array',
+                    'arr_is_indexed' => true,
+                    'arr_value_type' => 'string',
+                ],
+            ],
+        ],
+
+        'arr_not_value_type' => [
+            'params' => [
+                [
+                    'type' => 'string',
                 ],
             ],
         ],

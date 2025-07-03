@@ -1,8 +1,8 @@
 <?php
 
-namespace Neimee8\ValidatorPhp\Tests\Rules\General;
+namespace Neimee8\ValidatorPhp\Tests\Rules\General\Types;
 
-use Neimee8\ValidatorPhp\Tests\RuleTestCase;
+use Neimee8\ValidatorPhp\Tests\Variables;
 use Neimee8\ValidatorPhp\Tests\DataTypeManager;
 
 use Neimee8\ValidatorPhp\Tests\Stubs\MyClass;
@@ -10,10 +10,10 @@ use Neimee8\ValidatorPhp\Tests\Stubs\MyInterface;
 
 use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
 
-class TypesTest extends RuleTestCase {
-    use DataTypeManager;
+trait TypesTestCases {
+    use DataTypeManager, Variables;
 
-    private function typesPassesDefault(
+    private function assertPassesDefault(
         mixed $value,
         string $type
     ): void {
@@ -25,15 +25,15 @@ class TypesTest extends RuleTestCase {
         ];
 
         foreach ($param_set as $params) {
-            $this -> assertRulePasses(
-                rule: 'types',
+            $this -> {$this -> pass_method}(
+                rule: $this -> rule,
                 value: $value, 
                 params: $params
             );
         }
     }
 
-    private function typesFailsDefault(
+    private function assertFailsDefault(
         mixed $value,
         string $incompatible_type,
         array $excluded_types,
@@ -48,16 +48,16 @@ class TypesTest extends RuleTestCase {
         ];
 
         foreach ($param_set as $params) {
-            $this -> assertRuleFails(
-                rule: 'types',
+            $this -> {$this -> fail_method}(
+                rule: $this -> rule,
                 value: $value,
                 params: $params
             );
         }
 
         if ($filter_nullable) {
-            $this -> assertRuleFails(
-                rule: 'types',
+            $this -> {$this -> fail_method}(
+                rule: $this -> rule,
                 value: $value,
                 params: ["?$incompatible_type"]
             );
@@ -65,14 +65,14 @@ class TypesTest extends RuleTestCase {
     }
 
     public function testIntPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: 0,
             type: 'int'
         );
     }
 
     public function testIntFails(): void {
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: 2,
             incompatible_type: 'object',
             excluded_types: ['int']
@@ -80,14 +80,14 @@ class TypesTest extends RuleTestCase {
     }
 
     public function testFloatPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: 0.5,
             type: 'float'
         );
     }
 
     public function testFloatFails(): void {
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: 0.5,
             incompatible_type: 'object',
             excluded_types: ['float']
@@ -95,14 +95,14 @@ class TypesTest extends RuleTestCase {
     }
 
     public function testStringPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: 'some_string',
             type: 'string'
         );
     }
 
     public function testStringFails(): void {
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: 'some_string',
             incompatible_type: 'object',
             excluded_types: ['string']
@@ -110,19 +110,19 @@ class TypesTest extends RuleTestCase {
     }
 
     public function testBoolPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: true,
             type: 'bool'
         );
 
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: false,
             type: 'bool'
         );
     }
 
     public function testBoolFails(): void {
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: true,
             incompatible_type: 'object',
             excluded_types: ['bool']
@@ -130,14 +130,14 @@ class TypesTest extends RuleTestCase {
     }
 
     public function testArrayPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: [0, 1, 2],
             type: 'array'
         );
     }
 
     public function testArrayFails(): void {
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: [0, 1, 2],
             incompatible_type: 'object',
             excluded_types: ['array', 'iterable']
@@ -146,12 +146,12 @@ class TypesTest extends RuleTestCase {
 
     public function testCallablePasses(): void {
         $callables = require __DIR__
-        . '/../../../'
+        . '/../../../../'
         . self::$STUB_DIR
         . 'callables.php';
 
         foreach ($callables as $callable) {
-            $this -> typesPassesDefault(
+            $this -> assertPassesDefault(
                 value: $callable,
                 type: 'callable'
             );
@@ -159,7 +159,7 @@ class TypesTest extends RuleTestCase {
     }
 
     public function testCallableFails(): void {
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: fn () => true,
             incompatible_type: 'bool',
             excluded_types: ['callable', 'object']
@@ -167,14 +167,14 @@ class TypesTest extends RuleTestCase {
     }
 
     public function testObjectPasses(): void {
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: new class {},
             type: 'object'
         );
     }
 
     public function testObjectFails(): void {
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: new class {},
             incompatible_type: 'string',
             excluded_types: ['object']
@@ -184,7 +184,7 @@ class TypesTest extends RuleTestCase {
     public function testResourcePasses(): void {
         $resource = fopen('php://memory', 'r');
     
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: $resource,
             type: 'resource'
         );
@@ -195,7 +195,7 @@ class TypesTest extends RuleTestCase {
     public function testResourceFails(): void {
         $resource = fopen('php://memory', 'r');
 
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: $resource,
             incompatible_type: 'string',
             excluded_types: ['resource', 'object']
@@ -206,12 +206,12 @@ class TypesTest extends RuleTestCase {
 
     public function testIterablePasses(): void {
         $iterables = require __DIR__
-        . '/../../../'
+        . '/../../../../'
         . self::$STUB_DIR
         . 'iterables.php';
 
         foreach ($iterables as $iterable) {
-            $this -> typesPassesDefault(
+            $this -> assertPassesDefault(
                 value: $iterable,
                 type: 'iterable'
             );
@@ -220,17 +220,17 @@ class TypesTest extends RuleTestCase {
 
     public function testIterableFails(): void {
         $iterables = require __DIR__
-        . '/../../../'
+        . '/../../../../'
         . self::$STUB_DIR
         . 'iterables.php';
 
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: $iterables['array'],
             incompatible_type: 'string',
             excluded_types: ['iterable', 'array']
         );
 
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: $iterables['generator'],
             incompatible_type: 'string',
             excluded_types: ['iterable', 'object']
@@ -238,12 +238,12 @@ class TypesTest extends RuleTestCase {
     }
 
     public function testInstancePasses(): void {
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: new MyClass(),
             type: MyClass::class
         );
 
-        $this -> typesPassesDefault(
+        $this -> assertPassesDefault(
             value: new MyClass(),
             type: MyInterface::class
         );
@@ -256,7 +256,7 @@ class TypesTest extends RuleTestCase {
         ];
 
         foreach ($nullable_types as $type) {
-            $this -> typesPassesDefault(
+            $this -> assertPassesDefault(
                 value: null,
                 type: $type
             );
@@ -266,7 +266,7 @@ class TypesTest extends RuleTestCase {
     public function testNullFails(): void {
         $nullable_types = self::getNullableDataTypes();
 
-        $this -> typesFailsDefault(
+        $this -> assertFailsDefault(
             value: null,
             incompatible_type: 'string',
             excluded_types: $nullable_types,

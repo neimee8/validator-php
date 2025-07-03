@@ -1,8 +1,8 @@
 <?php
 
-namespace Neimee8\ValidatorPhp\Tests\Rules\General;
+namespace Neimee8\ValidatorPhp\Tests\Rules\General\Type;
 
-use Neimee8\ValidatorPhp\Tests\RuleTestCase;
+use Neimee8\ValidatorPhp\Tests\Variables;
 use Neimee8\ValidatorPhp\Tests\DataTypeManager;
 
 use Neimee8\ValidatorPhp\Tests\Stubs\MyClass;
@@ -10,10 +10,10 @@ use Neimee8\ValidatorPhp\Tests\Stubs\MyInterface;
 
 use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
 
-class TypeTest extends RuleTestCase {
-    use DataTypeManager;
+trait TypeTestCases {
+    use DataTypeManager, Variables;
 
-    private function typePassesDefault(
+        private function typePassesDefault(
         mixed $value,
         array $types
     ): void {
@@ -25,8 +25,8 @@ class TypeTest extends RuleTestCase {
             ];
 
             foreach ($param_set as $params) {
-                $this -> assertRulePasses(
-                    rule: 'type',
+                $this -> {$this -> pass_method}(
+                    rule: $this -> rule,
                     value: $value,
                     params: $params
                 );
@@ -45,8 +45,8 @@ class TypeTest extends RuleTestCase {
         );
 
         foreach ($types as $type) {
-            $this -> assertRuleFails(
-                rule: 'type',
+            $this -> {$this -> fail_method}(
+                rule: $this -> rule,
                 value: $value,
                 params: $type
             );
@@ -130,7 +130,7 @@ class TypeTest extends RuleTestCase {
 
     public function testCallablePasses(): void {
         $callables = require __DIR__
-        . '/../../../'
+        . '/../../../../'
         . self::$STUB_DIR
         . 'callables.php';
 
@@ -187,7 +187,7 @@ class TypeTest extends RuleTestCase {
 
     public function testIterablePasses(): void {
         $iterables = require __DIR__
-        . '/../../../'
+        . '/../../../../'
         . self::$STUB_DIR
         . 'iterables.php';
 
@@ -201,7 +201,7 @@ class TypeTest extends RuleTestCase {
 
     public function testIterableFails(): void {
         $iterables = require __DIR__
-        . '/../../../'
+        . '/../../../../'
         . self::$STUB_DIR
         . 'iterables.php';
 

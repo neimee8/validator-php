@@ -8,8 +8,6 @@ use Neimee8\ValidatorPhp\Validator;
 use Neimee8\ValidatorPhp\Exceptions\ValidationException;
 
 abstract class RuleTestCase extends TestCase {
-    protected static string $STUB_DIR = 'tests/stubs/';
-
     protected function assertRulePasses(
         mixed $rule,
         mixed $value,

@@ -13,6 +13,6 @@ return [
 
     'invokable' => new class {
         public function __invoke() {}
-    }
+    },
     
 ];

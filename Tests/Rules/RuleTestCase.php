@@ -7,9 +7,9 @@ use \PHPUnit\Framework\TestCase;
 use Neimee8\ValidatorPhp\Validator;
 use Neimee8\ValidatorPhp\Exceptions\ValidationException;
 
-abstract class RuleTestCase
-    extends TestCase
-    implements RuleTestCaseInterface {
+abstract class RuleTestCase extends TestCase {
+    protected static array $rules = [];
+    protected static mixed $compatible_value = null;
 
     protected function assertRulePasses(
         mixed $rule,
@@ -72,6 +72,11 @@ abstract class RuleTestCase
         );
     }
 
-    abstract public function testIncompatibleParams(): void;
+    protected static function getRules(): array {
+        return static::$rules;
+    }
 
+    protected static function getCompatibleValue(): mixed {
+        return static::$compatible_value;
+    }
 }

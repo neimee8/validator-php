@@ -7,7 +7,8 @@ use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCase;
 class TypeTest extends RuleTestCase {
     use TestCases;
 
-    private string $rule = 'type';
+    protected static array $rules = ['type'];
+    protected static mixed $compatible_value = null;
 
     private string $pass_method = 'assertRulePasses';
     private string $fail_method = 'assertRuleFails';

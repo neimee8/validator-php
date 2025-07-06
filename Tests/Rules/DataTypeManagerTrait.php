@@ -4,7 +4,7 @@ namespace Neimee8\ValidatorPhp\Tests\Rules;
 
 use Neimee8\ValidatorPhp\SchemaManager;
 
-trait DataTypeManager {
+trait DataTypeManagerTrait {
     private static ?array $ALL_DATA_TYPES = null;
 
     private static function getDataTypes(): array {

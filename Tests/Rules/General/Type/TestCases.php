@@ -3,15 +3,17 @@
 namespace Neimee8\ValidatorPhp\Tests\Rules\General\Type;
 
 use Neimee8\ValidatorPhp\Tests\Variables;
-use Neimee8\ValidatorPhp\Tests\Rules\DataTypeManager;
+use Neimee8\ValidatorPhp\Tests\Rules\DataTypeManagerTrait;
 
 use Neimee8\ValidatorPhp\Tests\Stubs\MyClass;
 use Neimee8\ValidatorPhp\Tests\Stubs\MyInterface;
 
-use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
+use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestStringParamsTrait;
 
 trait TestCases {
-    use DataTypeManager, Variables;
+    use DataTypeManagerTrait,
+        Variables,
+        TestStringParamsTrait;
 
     protected function assertPassesDefault(
         mixed $value,
@@ -25,11 +27,13 @@ trait TestCases {
             ];
 
             foreach ($param_set as $params) {
-                $this -> {$this -> pass_method}(
-                    rule: $this -> rule,
-                    value: $value,
-                    params: $params
-                );
+                foreach (static::getRules() as $rule) {
+                    $this -> {$this -> pass_method} (
+                        rule: $rule,
+                        value: $value,
+                        params: $params
+                    );
+                }
             }
         }
     }
@@ -45,11 +49,13 @@ trait TestCases {
         );
 
         foreach ($types as $type) {
-            $this -> {$this -> fail_method}(
-                rule: $this -> rule,
-                value: $value,
-                params: $type
-            );
+            foreach (static::getRules() as $rule) {
+                $this -> {$this -> fail_method} (
+                    rule: $rule,
+                    value: $value,
+                    params: $type
+                );
+            }
         }
     }
 
@@ -245,26 +251,5 @@ trait TestCases {
             value: null,
             types_to_filter: $nullable_types
         );
-    }
-
-    public function testIncompatibleParams(): void {
-        $param_set = [
-            null,
-            0,
-            0.5,
-            true,
-            [1, 2, 3],
-            fn () => true,
-            new class {},
-        ];
-
-        foreach ($param_set as $params) {
-            $this -> assertRuleThrows(
-                rule: $this -> rule,
-                value: null,
-                params: $params,
-                expected_exception: ValidationParamsException::class
-            );
-        }
     }
 }

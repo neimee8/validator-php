@@ -1,14 +1,15 @@
+# Ignoring all
 *
 
-# Source code
+# Allowing source code
 !/Src/
 !/Src/**
 
-# Unit tests
+# Allowing unit tests
 !/Tests/
 !/Tests/**
 
-# Root files
+# Allowing root files
 !/composer.json
 !/LICENSE
 !/README.md

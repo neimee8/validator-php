@@ -4,29 +4,35 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\General\ValueIn;
 
 use Neimee8\ValidatorPhp\Tests\Stubs\MyClass;
 
-use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
+use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestIndexedArrayParamsTrait;
 
 trait TestCases {
+    use TestIndexedArrayParamsTrait;
+
     protected function assertPassesDefault(
         mixed $value,
         array $haystack
     ): void {
-        $this -> {$this -> pass_method}(
-            rule: $this -> rule,
-            value: $value,
-            params: $haystack
-        );
+        foreach (static::getRules() as $rule) {
+            $this -> {$this -> pass_method} (
+                rule: $rule,
+                value: $value,
+                params: $haystack
+            );
+        }
     }
 
     protected function assertFailsDefault(
         mixed $value,
         array $haystack
     ): void {
-        $this -> {$this -> fail_method}(
-            rule: $this -> rule,
-            value: $value,
-            params: $haystack
-        );
+        foreach (static::getRules() as $rule) {
+            $this -> {$this -> fail_method} (
+                rule: $rule,
+                value: $value,
+                params: $haystack
+            );
+        }
     }
 
     public function testValueFoundInHaystack(): void {
@@ -89,26 +95,6 @@ trait TestCases {
             $this -> assertFailsDefault(
                 value: $values[$i],
                 haystack: $haystacks[$i]
-            );
-        }
-    }
-
-    public function testIncompatibleParams(): void {
-        $param_set = [
-            5,
-            5.5,
-            'some_string',
-            new class {},
-            fn() => true,
-            ['assoc' => 'array']
-        ];
-
-        foreach ($param_set as $params) {
-            $this -> assertRuleThrows(
-                rule: $this -> rule,
-                value: null,
-                params: $params,
-                expected_exception: ValidationParamsException::class
             );
         }
     }

@@ -3,15 +3,17 @@
 namespace Neimee8\ValidatorPhp\Tests\Rules\General\Types;
 
 use Neimee8\ValidatorPhp\Tests\Variables;
-use Neimee8\ValidatorPhp\Tests\Rules\DataTypeManager;
+use Neimee8\ValidatorPhp\Tests\Rules\DataTypeManagerTrait;
 
 use Neimee8\ValidatorPhp\Tests\Stubs\MyClass;
 use Neimee8\ValidatorPhp\Tests\Stubs\MyInterface;
 
-use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
+use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestTypeArrayParamsTrait;
 
 trait TestCases {
-    use DataTypeManager, Variables;
+    use DataTypeManagerTrait,
+        Variables,
+        TestTypeArrayParamsTrait;
 
     protected function assertPassesDefault(
         mixed $value,
@@ -25,11 +27,13 @@ trait TestCases {
         ];
 
         foreach ($param_set as $params) {
-            $this -> {$this -> pass_method}(
-                rule: $this -> rule,
-                value: $value, 
-                params: $params
-            );
+            foreach (static::getRules() as $rule) {
+                $this -> {$this -> pass_method} (
+                    rule: $rule,
+                    value: $value, 
+                    params: $params
+                );
+            }
         }
     }
 
@@ -48,19 +52,23 @@ trait TestCases {
         ];
 
         foreach ($param_set as $params) {
-            $this -> {$this -> fail_method}(
-                rule: $this -> rule,
-                value: $value,
-                params: $params
-            );
+            foreach (static::getRules() as $rule) {
+                $this -> {$this -> fail_method} (
+                    rule: $rule,
+                    value: $value,
+                    params: $params
+                );
+            }
         }
 
         if ($filter_nullable) {
-            $this -> {$this -> fail_method}(
-                rule: $this -> rule,
-                value: $value,
-                params: ["?$incompatible_type"]
-            );
+            foreach (static::getRules() as $rule) {
+                $this -> {$this -> fail_method} (
+                    rule: $rule,
+                    value: $value,
+                    params: ["?$incompatible_type"]
+                );
+            }
         }
     }
 
@@ -272,31 +280,5 @@ trait TestCases {
             excluded_types: $nullable_types,
             filter_nullable: false
         );
-    }
-
-    public function testIncompatibleParams(): void {
-        $param_set = [
-            null,
-            0,
-            0.5,
-            'some_string',
-            true,
-            fn () => true,
-            new class {},
-            ['some_string' => 'some_string'],
-            [
-                ['some_string', 'some_string'],
-                ['some_string', 'some_string']
-            ]
-        ];
-
-        foreach ($param_set as $params) {
-            $this -> assertRuleThrows(
-                rule: $this -> rule,
-                value: null,
-                params: $params,
-                expected_exception: ValidationParamsException::class
-            );
-        }
     }
 }

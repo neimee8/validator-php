@@ -1,13 +1,16 @@
 <?php
 
-namespace Neimee8\ValidatorPhp\Tests;
+namespace Neimee8\ValidatorPhp\Tests\Rules;
 
 use \PHPUnit\Framework\TestCase;
 
 use Neimee8\ValidatorPhp\Validator;
 use Neimee8\ValidatorPhp\Exceptions\ValidationException;
 
-abstract class RuleTestCase extends TestCase {
+abstract class RuleTestCase
+    extends TestCase
+    implements RuleTestCaseInterface {
+
     protected function assertRulePasses(
         mixed $rule,
         mixed $value,
@@ -68,4 +71,7 @@ abstract class RuleTestCase extends TestCase {
             . var_export($params, true)
         );
     }
+
+    abstract public function testIncompatibleParams(): void;
+
 }

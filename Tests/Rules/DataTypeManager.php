@@ -1,6 +1,6 @@
 <?php
 
-namespace Neimee8\ValidatorPhp\Tests;
+namespace Neimee8\ValidatorPhp\Tests\Rules;
 
 use Neimee8\ValidatorPhp\SchemaManager;
 

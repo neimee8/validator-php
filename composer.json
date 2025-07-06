@@ -4,12 +4,12 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Neimee8\\ValidatorPhp\\": "src/"
+            "Neimee8\\ValidatorPhp\\": "Src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Neimee8\\ValidatorPhp\\Tests\\": "tests/"
+            "Neimee8\\ValidatorPhp\\Tests\\": "Tests/"
         }
     },
     "authors": [

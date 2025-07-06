@@ -3,17 +3,17 @@
 namespace Neimee8\ValidatorPhp\Tests\Rules\General\Type;
 
 use Neimee8\ValidatorPhp\Tests\Variables;
-use Neimee8\ValidatorPhp\Tests\DataTypeManager;
+use Neimee8\ValidatorPhp\Tests\Rules\DataTypeManager;
 
 use Neimee8\ValidatorPhp\Tests\Stubs\MyClass;
 use Neimee8\ValidatorPhp\Tests\Stubs\MyInterface;
 
 use Neimee8\ValidatorPhp\Exceptions\ValidationParamsException;
 
-trait TypeTestCases {
+trait TestCases {
     use DataTypeManager, Variables;
 
-        private function typePassesDefault(
+    protected function assertPassesDefault(
         mixed $value,
         array $types
     ): void {
@@ -34,7 +34,7 @@ trait TypeTestCases {
         }
     }
 
-    private function typeFailsDefault(
+    protected function assertFailsDefault(
         mixed $value,
         array $types_to_filter,
         bool $filter_nullable = true
@@ -54,75 +54,75 @@ trait TypeTestCases {
     }
 
     public function testIntPasses(): void {
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: 0,
             types: ['int']
         );
     }
 
     public function testIntFails(): void {
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: 0,
             types_to_filter: ['int']
         );
     }
 
     public function testFloatPasses(): void {
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: 0.5,
             types: ['float']
         );
     }
 
     public function testFloatFails(): void {
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: 0.5,
             types_to_filter: ['float']
         );
     }
 
     public function testStringPasses(): void {
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: 'some_string',
             types: ['string']
         );
     }
 
     public function testStringFails(): void {
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: 'some_string',
             types_to_filter: ['string']
         );
     }
 
     public function testBoolPasses(): void {
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: true,
             types: ['bool']
         );
 
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: false,
             types: ['bool']
         );
     }
 
     public function testBoolFails(): void {
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: true,
             types_to_filter: ['bool']
         );
     }
 
     public function testArrayPasses(): void {
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: [0, 1, 2],
             types: ['array', 'iterable']
         );
     }
 
     public function testArrayFails(): void {
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: [0, 1, 2],
             types_to_filter: ['array', 'iterable']
         );
@@ -135,7 +135,7 @@ trait TypeTestCases {
         . 'callables.php';
 
         foreach ($callables as $callable) {
-            $this -> typePassesDefault(
+            $this -> assertPassesDefault(
                 value: $callable,
                 types: ['callable']
             );
@@ -143,21 +143,21 @@ trait TypeTestCases {
     }
 
     public function testCallableFails(): void {
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: fn () => true,
             types_to_filter: ['callable', 'object']
         );
     }
 
     public function testObjectPasses(): void {
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: new class {},
             types: ['object']
         );
     }
 
     public function testObjectFails(): void {
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: new class {},
             types_to_filter: ['object']
         );
@@ -166,7 +166,7 @@ trait TypeTestCases {
     public function testResourcePasses(): void {
         $resource = fopen('php://memory', 'r');
 
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: $resource,
             types: ['resource']
         );
@@ -177,7 +177,7 @@ trait TypeTestCases {
     public function testResourceFails(): void {
         $resource = fopen('php://memory', 'r');
 
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: $resource,
             types_to_filter: ['resource', 'object']
         );
@@ -192,7 +192,7 @@ trait TypeTestCases {
         . 'iterables.php';
 
         foreach ($iterables as $iterable) {
-            $this -> typePassesDefault(
+            $this -> assertPassesDefault(
                 value: $iterable,
                 types: ['iterable']
             );
@@ -205,31 +205,31 @@ trait TypeTestCases {
         . self::$STUB_DIR
         . 'iterables.php';
 
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: $iterables['array'],
             types_to_filter: ['iterable', 'array']
         );
 
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: $iterables['generator'],
             types_to_filter: ['iterable', 'object']
         );
     }
 
     public function testInstancePasses(): void {
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: new MyClass(),
             types: [MyClass::class]
         );
 
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: new MyClass(),
             types: [MyInterface::class]
         );
     }
 
     public function testNullPasses(): void {
-        $this -> typePassesDefault(
+        $this -> assertPassesDefault(
             value: null,
             types:  [
                 ...self::getNullableDataTypes(),
@@ -241,7 +241,7 @@ trait TypeTestCases {
     public function testNullFails(): void {
         $nullable_types = self::getNullableDataTypes();
 
-        $this -> typeFailsDefault(
+        $this -> assertFailsDefault(
             value: null,
             types_to_filter: $nullable_types
         );
@@ -260,7 +260,7 @@ trait TypeTestCases {
 
         foreach ($param_set as $params) {
             $this -> assertRuleThrows(
-                rule: 'type',
+                rule: $this -> rule,
                 value: null,
                 params: $params,
                 expected_exception: ValidationParamsException::class

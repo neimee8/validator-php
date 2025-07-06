@@ -2,9 +2,9 @@
 
 namespace Neimee8\ValidatorPhp\Tests\Rules\General\Type;
 
-use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCase;
+use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCases;
 
-class NotTypeTest extends RuleTestCase {
+class NotTypeTest extends RuleTestCases {
     use TestCases;
 
     protected static array $rules = ['not_type'];

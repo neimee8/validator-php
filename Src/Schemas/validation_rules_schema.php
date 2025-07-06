@@ -398,6 +398,7 @@ return [
         'str_regex_match' => [
             'params' => [
                 [
+                    'type' => 'string',
                     'str_is_regex' => true,
                 ],
             ],
@@ -406,6 +407,7 @@ return [
         'str_not_regex_match' => [
             'params' => [
                 [
+                    'type' => 'string',
                     'str_is_regex' => true,
                 ],
             ],

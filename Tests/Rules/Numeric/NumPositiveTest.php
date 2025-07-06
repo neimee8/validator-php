@@ -2,10 +2,10 @@
 
 namespace Neimee8\ValidatorPhp\Tests\Rules\Numeric;
 
-use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCase;
+use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCases;
 use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestBoolParamsTrait;
 
-class NumPositiveTest extends RuleTestCase {
+class NumPositiveTest extends RuleTestCases {
     use TestBoolParamsTrait;
 
     protected static array $rules = ['num_positive'];

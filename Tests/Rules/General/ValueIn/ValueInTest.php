@@ -2,9 +2,9 @@
 
 namespace Neimee8\ValidatorPhp\Tests\Rules\General\ValueIn;
 
-use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCase;
+use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCases;
 
-class ValueInTest extends RuleTestCase {
+class ValueInTest extends RuleTestCases {
     use TestCases;
 
     protected static array $rules = ['value_in'];

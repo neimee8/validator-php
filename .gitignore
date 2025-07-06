@@ -1,12 +1,15 @@
-vendor/
-index.php
-/package.json
-/package-lock.json
-dev-scripts/
-node_modules/
-composer.lock
-*_depr.*
-/schemas/
-/.vscode/
-.phpunit.result.cache
-coverage/
+*
+
+# Source code
+!/Src/
+!/Src/**
+
+# Unit tests
+!/Tests/
+!/Tests/**
+
+# Root files
+!/composer.json
+!/LICENSE
+!/README.md
+!/phpunit.xml

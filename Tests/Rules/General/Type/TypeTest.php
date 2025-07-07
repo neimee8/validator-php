@@ -4,6 +4,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\General\Type;
 
 use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCases;
 
+/**
+ * @group rules
+ * @group general
+ */
 class TypeTest extends RuleTestCases {
     use TestCases;
 

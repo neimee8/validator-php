@@ -4,6 +4,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\String;
 
 use Neimee8\ValidatorPhp\Tests\Rules\ValueTestCases;
 
+/**
+ * @group rules
+ * @group string
+ */
 class ValueTest extends ValueTestCases {
     protected static ?string $rule_group = 'string';
 

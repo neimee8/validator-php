@@ -4,6 +4,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\String;
 
 use Neimee8\ValidatorPhp\Tests\Rules\MustBeRuleTestCases;
 
+/**
+ * @group rules
+ * @group string
+ */
 class StrNumericTest extends MustBeRuleTestCases {
     protected static array $rules = ['str_numeric'];
     

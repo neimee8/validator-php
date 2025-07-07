@@ -4,6 +4,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\General\ValueIn;
 
 use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCases;
 
+/**
+ * @group rules
+ * @group general
+ */
 class ValueNotInTest extends RuleTestCases {
     use TestCases;
 

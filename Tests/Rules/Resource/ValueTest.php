@@ -4,6 +4,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\Resource;
 
 use Neimee8\ValidatorPhp\Tests\Rules\ValueTestCases;
 
+/**
+ * @group rules
+ * @group resource
+ */
 class ValueTest extends ValueTestCases {
     protected static ?string $rule_group = 'resource';
 

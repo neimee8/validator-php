@@ -5,6 +5,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\Numeric;
 use Neimee8\ValidatorPhp\Tests\Rules\ReferenceRuleTestCases;
 use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestNumericParamsTrait;
 
+/**
+ * @group rules
+ * @group numeric
+ */
 class NumLessThanTest extends ReferenceRuleTestCases {
     use TestNumericParamsTrait;
 

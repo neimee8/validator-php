@@ -5,6 +5,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\String;
 use Neimee8\ValidatorPhp\Tests\Rules\ReferenceRuleTestCases;
 use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestLenParamsTrait;
 
+/**
+ * @group rules
+ * @group string
+ */
 class StrLenTest extends ReferenceRuleTestCases {
     use TestLenParamsTrait;
 

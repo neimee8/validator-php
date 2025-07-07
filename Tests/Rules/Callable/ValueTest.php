@@ -4,6 +4,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\Callable;
 
 use Neimee8\ValidatorPhp\Tests\Rules\ValueTestCases;
 
+/**
+ * @group rules
+ * @group callable
+ */
 class ValueTest extends ValueTestCases {
     protected static ?string $rule_group = 'callable';
 

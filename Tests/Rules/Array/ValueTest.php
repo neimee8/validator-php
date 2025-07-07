@@ -4,6 +4,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\Array;
 
 use Neimee8\ValidatorPhp\Tests\Rules\ValueTestCases;
 
+/**
+ * @group rules
+ * @group array
+ */
 class ValueTest extends ValueTestCases {
     protected static ?string $rule_group = 'array';
 

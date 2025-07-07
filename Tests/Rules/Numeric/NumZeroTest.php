@@ -2,12 +2,9 @@
 
 namespace Neimee8\ValidatorPhp\Tests\Rules\Numeric;
 
-use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCases;
-use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestBoolParamsTrait;
+use Neimee8\ValidatorPhp\Tests\Rules\MustBeRuleTestCases;
 
-class NumZeroTest extends RuleTestCases {
-    use TestBoolParamsTrait;
-    
+class NumZeroTest extends MustBeRuleTestCases {
     protected static array $rules = [
         'num_positive_zero',
         'num_negative_zero'
@@ -17,21 +14,11 @@ class NumZeroTest extends RuleTestCases {
         return 5;
     }
 
-    public function testZero(): void {
-        $param_set = [true, false];
-        $methods = [
-            (string) true => 'assertRulePasses',
-            (string) false => 'assertRuleFails'
-        ];
+    protected static function getValuesToPass(): array {
+        return [0];
+    }
 
-        foreach ($param_set as $params) {
-            foreach (self::$rules as $rule) {
-                $this -> {$methods[(string) $params]} (
-                    rule: $rule,
-                    value: 0,
-                    params: $params
-                );
-            }
-        }
+    protected static function getValuesToFail(): array {
+        return [];
     }
 }

@@ -32,13 +32,13 @@ class ValidatorString implements ValidatorInterface {
     private static function str_numeric(string $value, array $params): bool {
         $must_be = $params[0]; // true or false
 
-        return $must_be === is_numeric($value);
+        return $must_be === is_numeric(trim($value));
     }
 
     private static function str_alphabetic(string $value, array $params): bool {
         $must_be = $params[0]; // true or false
 
-        return $must_be === self::strRegex($value, '/^\p{L}+$/u');
+        return $must_be === self::strRegex($value, '/^[\p{L}]+$/u');
     }
 
     private static function str_contains_special(string $value, array $params): bool {

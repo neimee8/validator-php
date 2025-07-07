@@ -78,4 +78,8 @@ abstract class RuleTestCases extends TestCase {
     protected static function getCompatibleValue(): mixed {
         return null;
     }
+
+    protected function assertPlaceholder(): void {
+        $this -> assertTrue(true);
+    }
 }

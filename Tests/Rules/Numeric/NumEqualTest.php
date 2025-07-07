@@ -2,10 +2,10 @@
 
 namespace Neimee8\ValidatorPhp\Tests\Rules\Numeric;
 
-use Neimee8\ValidatorPhp\Tests\Rules\RuleTestCases;
+use Neimee8\ValidatorPhp\Tests\Rules\ReferenceRuleTestCases;
 use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestNumericParamsTrait;
 
-class NumEqualTest extends RuleTestCases {
+class NumEqualTest extends ReferenceRuleTestCases {
     use TestNumericParamsTrait;
     
     protected static array $rules = [
@@ -17,34 +17,13 @@ class NumEqualTest extends RuleTestCases {
         return 5;
     }
 
-    public function testEqual(): void {
-        $param_set = [
-            [
-                'value' => 5,
-                'reference' => 5
-            ],
-            [
-                'value' => 5.0,
-                'reference' => 5.0
-            ],
-            [
-                'value' => 5,
-                'reference' => 5.0
-            ],
-            [
-                'value' => 5.0,
-                'reference' => 5
-            ]
-        ];
+    protected array $references = [5, 5.0];
 
-        foreach ($param_set as $params) {
-            foreach (self::$rules as $rule) {
-                $this -> assertRulePasses(
-                    rule: $rule,
-                    value: $params['value'],
-                    params: $params['reference']
-                );
-            }
-        }
+    protected static function getValuesToPass(): array {
+        return [5, 5.0];
+    }
+
+    protected static function getValuesToFail(): array {
+        return [];
     }
 }

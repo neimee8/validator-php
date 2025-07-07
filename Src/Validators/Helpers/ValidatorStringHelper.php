@@ -22,10 +22,27 @@ trait ValidatorStringHelper {
             return false;
         }
 
-        $casted = $num_type === NumType::INT
-            ? (int) $string
-            : (float) $string;
+        $casted = null;
 
-        return ValidatorNumeric::validate('num_' . $num_type -> value, $casted, [true]);
+        switch ($num_type) {
+            case NumType::INT:
+                $casted = (int) $string;
+                break;
+            
+            case NumType::FLOAT:
+                $casted = (float) $string;
+                break;
+
+            case NumType::NUMERIC:
+                if (str_contains($string, '.')) {
+                    $casted = (float) $string;
+                } else {
+                    $casted = (int) $string;
+                }
+
+                break;
+        }
+
+        return ValidatorNumeric::validate('num_' . $rule, $casted, [true]);
     }
 }

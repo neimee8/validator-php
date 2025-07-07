@@ -331,7 +331,7 @@ return [
             ],
         ],
 
-        'str_int_num_positive_zero' => [
+        'str_int_positive_zero' => [
             'params' => [
                 [
                     'type' => 'bool',
@@ -363,7 +363,7 @@ return [
             ],
         ],
 
-        'str_float_num_positive_zero' => [
+        'str_float_positive_zero' => [
             'params' => [
                 [
                     'type' => 'bool',
@@ -372,6 +372,38 @@ return [
         ],
 
         'str_float_negative_zero' => [
+            'params' => [
+                [
+                    'type' => 'bool',
+                ],
+            ],
+        ],
+
+        'str_numeric_positive' => [
+            'params' => [
+                [
+                    'type' => 'bool',
+                ],
+            ],
+        ],
+
+        'str_numeric_negative' => [
+            'params' => [
+                [
+                    'type' => 'bool',
+                ],
+            ],
+        ],
+
+        'str_numeric_positive_zero' => [
+            'params' => [
+                [
+                    'type' => 'bool',
+                ],
+            ],
+        ],
+
+        'str_numeric_negative_zero' => [
             'params' => [
                 [
                     'type' => 'bool',

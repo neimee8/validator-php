@@ -148,7 +148,7 @@ class ValidatorString implements ValidatorInterface {
     private static function str_float(string $value, array $params): bool {
         $must_be = $params[0]; // true or false
 
-        return $must_be === self::strFilter($value, FILTER_VALIDATE_FLOAT);
+        return $must_be === (self::strFilter($value, FILTER_VALIDATE_FLOAT) && str_contains($value, '.'));
     }
 
     private static function str_int_positive(string $value, array $params): bool {
@@ -197,6 +197,30 @@ class ValidatorString implements ValidatorInterface {
         $must_be = $params[0]; // true or false
         
         return $must_be === self::strNum($value, NumType::FLOAT, rule: 'negative_zero');
+    }
+
+        private static function str_numeric_positive(string $value, array $params): bool {
+        $must_be = $params[0]; // true or false
+        
+        return $must_be === self::strNum($value, NumType::NUMERIC, rule: 'positive');
+    }
+
+    private static function str_numeric_negative(string $value, array $params): bool {
+        $must_be = $params[0]; // true or false
+        
+        return $must_be === self::strNum($value, NumType::NUMERIC, rule: 'negative');
+    }
+
+    private static function str_numeric_positive_zero(string $value, array $params): bool {
+        $must_be = $params[0]; // true or false
+        
+        return $must_be === self::strNum($value, NumType::NUMERIC, rule: 'positive_zero');
+    }
+
+    private static function str_numeric_negative_zero(string $value, array $params): bool {
+        $must_be = $params[0]; // true or false
+        
+        return $must_be === self::strNum($value, NumType::NUMERIC, rule: 'negative_zero');
     }
 
     private static function str_contains(string $value, array $params): bool {

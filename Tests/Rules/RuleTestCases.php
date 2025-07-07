@@ -9,7 +9,6 @@ use Neimee8\ValidatorPhp\Exceptions\ValidationException;
 
 abstract class RuleTestCases extends TestCase {
     protected static array $rules = [];
-    protected static mixed $compatible_value = null;
 
     protected function assertRulePasses(
         mixed $rule,
@@ -77,6 +76,6 @@ abstract class RuleTestCases extends TestCase {
     }
 
     protected static function getCompatibleValue(): mixed {
-        return static::$compatible_value;
+        return null;
     }
 }

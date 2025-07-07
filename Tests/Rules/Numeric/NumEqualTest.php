@@ -13,7 +13,9 @@ class NumEqualTest extends RuleTestCases {
         'num_less_or_equal'
     ];
 
-    protected static mixed $compatible_value = 5;
+    protected static function getCompatibleValue(): int {
+        return 5;
+    }
 
     public function testEqual(): void {
         $param_set = [

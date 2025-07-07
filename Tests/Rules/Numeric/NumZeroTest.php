@@ -13,7 +13,9 @@ class NumZeroTest extends RuleTestCases {
         'num_negative_zero'
     ];
     
-    protected static mixed $compatible_value = 5;
+    protected static function getCompatibleValue(): int {
+        return 5;
+    }
 
     public function testZero(): void {
         $param_set = [true, false];

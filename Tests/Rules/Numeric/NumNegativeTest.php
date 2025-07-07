@@ -9,7 +9,10 @@ class NumNegativeTest extends RuleTestCases {
     use TestBoolParamsTrait;
     
     protected static array $rules = ['num_negative'];
-    protected static mixed $compatible_value = 5;
+    
+    protected static function getCompatibleValue(): int {
+        return 5;
+    }
 
     private array $values_to_pass = [
         -1, -2, -3, -1000, -0.5, -0.1,

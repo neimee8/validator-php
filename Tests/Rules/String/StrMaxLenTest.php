@@ -5,10 +5,10 @@ namespace Neimee8\ValidatorPhp\Tests\Rules\String;
 use Neimee8\ValidatorPhp\Tests\Rules\ReferenceRuleTestCases;
 use Neimee8\ValidatorPhp\Tests\Rules\ParamTests\TestLenParamsTrait;
 
-class StrLenTest extends ReferenceRuleTestCases {
+class StrMaxLenTest extends ReferenceRuleTestCases {
     use TestLenParamsTrait;
 
-    protected static array $rules = ['str_len'];
+    protected static array $rules = ['str_max_len'];
 
     protected static function getCompatibleValue(): string {
         return 'some_string';
@@ -24,21 +24,24 @@ class StrLenTest extends ReferenceRuleTestCases {
             '     ',
             '✅✅✅✅✅',
             'ūīķšž',
-            "\n\n\n\n\n"
+            "\n\n\n\n\n",
+            '1',
+            '123',
+            '✅✅✅✅',
+            '    ',
+            "\n\n\t"
         ];
     }
 
     protected static function getValuesToFail(): array {
         return [
-            '1',
-            'some_string',
-            '✅✅✅✅',
-            '✅✅✅✅✅✅',
-            '123456',
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. '
-            . 'Id perspiciatis suscipit, ullam sed earum illo cumque accusantium '
-            . 'expedita nisi maiores, impedit harum est eveniet a tempore! Quasi '
-            . 'placeat doloribus ad?'
+            '12345666',
+            'abcdef',
+            'qwertqq',
+            '       ',
+            '✅✅✅✅✅‼️‼️‼️‼️‼️‼️‼️',
+            'ūīķšžasas',
+            "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
         ];
     }
 }

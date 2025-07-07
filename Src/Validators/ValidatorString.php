@@ -120,7 +120,7 @@ class ValidatorString implements ValidatorInterface {
     private static function str_contains_html(string $value, array $params): bool {
         $must_be = $params[0]; // true or false
 
-        return $must_be === ($value === strip_tags($value));
+        return $must_be === ($value !== strip_tags($value));
     }
 
     private static function str_is_regex(string $value, array $params): bool {
@@ -136,7 +136,7 @@ class ValidatorString implements ValidatorInterface {
     private static function str_is_class_string(string $value, array $params): bool {
         $must_be = $params[0]; // true or false
 
-        return $must_be === self::strRegex($value, '/^\\\\?([A-Za-z_][A-Za-z0-9_]*\\\\)*[A-Za-z_][A-Za-z0-9_]*$/');
+        return $must_be === (class_exists($value) || interface_exists($value) || trait_exists($value));
     }
 
     private static function str_int(string $value, array $params): bool {

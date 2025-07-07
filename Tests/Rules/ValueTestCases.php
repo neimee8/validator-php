@@ -47,7 +47,7 @@ abstract class ValueTestCases extends RuleTestCases {
                 $cases["{$rule}_{$i}"] = [
                     $rule,
                     $value,
-                    $params
+                    count($params) === 1 ? $params[0] : $params
                 ];
             }
         }
@@ -61,7 +61,7 @@ abstract class ValueTestCases extends RuleTestCases {
     public function testIncompatibleValue(
         string $rule,
         mixed $value,
-        array $params
+        mixed $params
     ): void {
         $this -> assertRuleThrows(
             $rule,

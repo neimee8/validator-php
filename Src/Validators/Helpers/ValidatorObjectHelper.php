@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Validators\Helpers;
 
 use \ReflectionClass;

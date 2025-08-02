@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Exceptions;
 
 use Neimee8\ValidatorPhp\Enums\ValidationMode;
 
-class ValidationModeException extends ValidationException {
+final class ValidationModeException extends ValidationException {
     public function __construct(
         string $message = '',
         int $code = self::CODE_INVALID_VALIDATION_MODE,

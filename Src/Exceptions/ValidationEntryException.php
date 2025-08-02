@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Exceptions;
 
-use Neimee8\ValidatorPhp\Enums\ValidationMapType;
-
-class ValidationEntryException extends ValidationException {
+final class ValidationEntryException extends ValidationException {
     public function __construct(
         string $message = '',
         int $code = self::CODE_INVALID_ENTRY,

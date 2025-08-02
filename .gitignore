@@ -14,3 +14,7 @@
 !/LICENSE
 !/README.md
 !/phpunit.xml
+
+# Ignoring deprecated files and directories
+**/*_deprecated/
+**/*_deprecated.*

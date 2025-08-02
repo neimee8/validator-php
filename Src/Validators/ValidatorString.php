@@ -1,245 +1,172 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Validators;
 
 use Neimee8\ValidatorPhp\Enums\NumType;
 
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorInterface;
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorHelper;
 use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorStringHelper;
 
-class ValidatorString implements ValidatorInterface {
-    use ValidationInvoker, ValidatorStringHelper;
+final class ValidatorString {
+    use ValidatorHelper, ValidatorStringHelper;
 
     private static function str_len(string $value, array $params): bool {
-        $reference = $params[0]; // non negative int
-
-        return mb_strlen($value) === $reference;
+        return mb_strlen($value) === $params['size'];
     }
 
     private static function str_min_len(string $value, array $params): bool {
-        $threshold = $params[0]; // non negative int
-
-        return mb_strlen($value) >= $threshold;
+        return mb_strlen($value) >= $params['size'];
     }
 
     private static function str_max_len(string $value, array $params): bool {
-        $threshold = $params[0]; // non negative int
-
-        return mb_strlen($value) <= $threshold;
-    }
-
-    private static function str_numeric(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === is_numeric(trim($value));
+        return mb_strlen($value) <= $params['size'];
     }
 
     private static function str_alphabetic(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
+        return self::strRegex($value, '/^\p{L}+$/u');
+    }
 
-        return $must_be === self::strRegex($value, '/^\p{L}+$/u');
+    private static function str_alphanumeric(string $value, array $params): bool {
+        return self::strRegex($value, '/^[\p{L}\p{N}]+$/u');
     }
 
     private static function str_contains_special(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === self::strRegex($value, '/[^\p{L}\p{N}]/u');
+        return self::strRegex($value, '/[^\p{L}\p{N}]/u');
     }
 
     private static function str_json(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
         $decoded = json_decode($value, associative: true);
-        $decoded_successfully = json_last_error() === JSON_ERROR_NONE;
 
-        return $must_be === $decoded_successfully;
+        return json_last_error() === JSON_ERROR_NONE;
     }
 
     private static function str_email(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === self::strFilter($value, FILTER_VALIDATE_EMAIL);
+        return self::strFilter($value, FILTER_VALIDATE_EMAIL);
     }
 
     private static function str_url(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === self::strFilter($value, FILTER_VALIDATE_URL);
+        return self::strFilter($value, FILTER_VALIDATE_URL);
     }
 
     private static function str_ip(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === self::strFilter($value, FILTER_VALIDATE_IP);
+        return self::strFilter($value, FILTER_VALIDATE_IP);
     }
 
     private static function str_ipv4(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === self::strFilter($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        return self::strFilter($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
     }
 
     private static function str_ipv6(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === self::strFilter($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+        return self::strFilter($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
     }
 
     private static function str_base64(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
         $decoded = base64_decode($value, strict: true);
 
-        return $must_be === ($decoded !== false && strlen($value) % 4 === 0);
+        return strlen($value) % 4 === 0 && $decoded !== false;
     }
 
     private static function str_lowercase(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === ($value === mb_strtolower($value));
+        return $value === mb_strtolower($value);
     }
 
     private static function str_uppercase(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === ($value === mb_strtoupper($value));
+        return $value === mb_strtoupper($value);
     }
 
     private static function str_ascii(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === mb_check_encoding($value, 'ASCII');
+        return mb_check_encoding($value, 'ASCII');
     }
 
     private static function str_utf8(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === mb_check_encoding($value, 'UTF-8');
+        return mb_check_encoding($value, 'UTF-8');
     }
 
     private static function str_contains_html(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === ($value !== strip_tags($value));
+        return $value !== strip_tags($value);
     }
 
-    private static function str_is_regex(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
+    private static function str_regex(string $value, array $params): bool {
         set_error_handler(function() {}, E_WARNING);
         $regex_check = @preg_match($value, '');
         restore_error_handler();
 
-        return $must_be === ($regex_check !== false);
+        return $regex_check !== false;
     }
 
-    private static function str_is_class_string(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === (class_exists($value) || interface_exists($value) || trait_exists($value));
+    private static function str_class_string(string $value, array $params): bool {
+        return class_exists($value)
+            || interface_exists($value)
+            || trait_exists($value);
     }
 
     private static function str_int(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === self::strFilter($value, FILTER_VALIDATE_INT);
+        return self::strFilter($value, FILTER_VALIDATE_INT);
     }
 
     private static function str_float(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
+        return self::strFilter($value, FILTER_VALIDATE_FLOAT) && str_contains($value, '.');
+    }
 
-        return $must_be === (self::strFilter($value, FILTER_VALIDATE_FLOAT) && str_contains($value, '.'));
+    private static function str_numeric(string $value, array $params): bool {
+        return is_numeric(trim($value));
     }
 
     private static function str_int_positive(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::INT, rule: 'positive');
+        return self::strNum($value, NumType::INT, rule: 'positive');
     }
 
     private static function str_int_negative(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::INT, rule: 'negative');
+        return self::strNum($value, NumType::INT, rule: 'negative');
     }
 
     private static function str_int_positive_zero(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::INT, rule: 'positive_zero');
+        return self::strNum($value, NumType::INT, rule: 'positive_zero');
     }
 
     private static function str_int_negative_zero(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::INT, rule: 'negative_zero');
+        return self::strNum($value, NumType::INT, rule: 'negative_zero');
     }
 
     private static function str_float_positive(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::FLOAT, rule: 'positive');
+        return self::strNum($value, NumType::FLOAT, rule: 'positive');
     }
 
     private static function str_float_negative(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::FLOAT, rule: 'negative');
+        return self::strNum($value, NumType::FLOAT, rule: 'negative');
     }
 
     private static function str_float_positive_zero(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::FLOAT, rule: 'positive_zero');
+        return self::strNum($value, NumType::FLOAT, rule: 'positive_zero');
     }
 
     private static function str_float_negative_zero(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::FLOAT, rule: 'negative_zero');
+        return self::strNum($value, NumType::FLOAT, rule: 'negative_zero');
     }
 
-        private static function str_numeric_positive(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::NUMERIC, rule: 'positive');
+    private static function str_numeric_positive(string $value, array $params): bool {
+        return self::strNum($value, NumType::NUMERIC, rule: 'positive');
     }
 
     private static function str_numeric_negative(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::NUMERIC, rule: 'negative');
+        return self::strNum($value, NumType::NUMERIC, rule: 'negative');
     }
 
     private static function str_numeric_positive_zero(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::NUMERIC, rule: 'positive_zero');
+        return self::strNum($value, NumType::NUMERIC, rule: 'positive_zero');
     }
 
     private static function str_numeric_negative_zero(string $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-        
-        return $must_be === self::strNum($value, NumType::NUMERIC, rule: 'negative_zero');
+        return self::strNum($value, NumType::NUMERIC, rule: 'negative_zero');
     }
 
     private static function str_contains(string $value, array $params): bool {
-        $needle = $params[0]; // substring
-
-        return mb_strpos($value, $needle, 0, 'UTF-8') !== false;
-    }
-
-    private static function str_not_contains(string $value, array $params): bool {
-        return !self::str_contains($value, $params);
+        return mb_strpos($value, $params['needle'], 0, 'UTF-8') !== false;
     }
 
     private static function str_regex_match(string $value, array $params): bool {
-        $pattern = $params[0]; // regex
-
-        return self::strRegex($value, $pattern);
-    }
-
-    private static function str_not_regex_match(string $value, array $params): bool {
-        return !self::str_regex_match($value, $params);
+        return self::strRegex($value, $params['pattern']);
     }
 }

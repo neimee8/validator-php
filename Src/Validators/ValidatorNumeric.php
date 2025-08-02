@@ -1,58 +1,43 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Validators;
 
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorInterface;
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorHelper;
 
-class ValidatorNumeric implements ValidatorInterface {
-    use ValidationInvoker;
+final class ValidatorNumeric {
+    use ValidatorHelper;
 
     private static function num_positive(int|float $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === ($value > 0);
+        return $value > 0;
     }
 
     private static function num_positive_zero(int|float $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === ($value >= 0);
+        return $value >= 0;
     }
 
     private static function num_negative(int|float $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === ($value < 0);
+        return $value < 0;
     }
 
     private static function num_negative_zero(int|float $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === ($value <= 0);
+        return $value <= 0;
     }
 
     private static function num_more_than(int|float $value, array $params): bool {
-        $reference = $params[0]; // int or float
-
-        return $value > $reference;
+        return $value > $params['threshold'];
     }
 
     private static function num_more_or_equal(int|float $value, array $params): bool {
-        $reference = $params[0]; // int or float
-
-        return $value >= $reference;
+        return $value >= $params['threshold'];
     }
 
     private static function num_less_than(int|float $value, array $params): bool {
-        $reference = $params[0]; // int or float
-
-        return $value < $reference;
+        return $value < $params['threshold'];
     }
 
     private static function num_less_or_equal(int|float $value, array $params): bool {
-        $reference = $params[0]; // int or float
-
-        return $value <= $reference;
+        return $value <= $params['threshold'];
     }
 }

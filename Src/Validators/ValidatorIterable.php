@@ -1,24 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Validators;
 
 use \Traversable;
 
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorInterface;
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorHelper;
 
-class ValidatorIterable implements ValidatorInterface {
-    use ValidationInvoker;
+final class ValidatorIterable {
+    use ValidatorHelper;
 
-    private static function iterable_is_array(iterable $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === is_array($value);
+    private static function it_array(iterable $value, array $params): bool {
+        return is_array($value);
     }
 
-    private static function iterable_is_traversable(iterable $value, array $params): bool {
-        $must_be = $params[0]; // true or false
-
-        return $must_be === (is_object($value) && $value instanceof Traversable);
+    private static function it_traversable(iterable $value, array $params): bool {
+        return is_object($value) && $value instanceof Traversable;
     }
 }

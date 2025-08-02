@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Validators\Helpers;
 
 use Neimee8\ValidatorPhp\Enums\NumType;
@@ -16,7 +18,10 @@ trait ValidatorStringHelper {
 
     private static function strNum(string $string, NumType $num_type, string $rule): bool {
         $local_rule = 'str_' . $num_type -> value;
-        $is_num = self::$local_rule($string, [true]);
+        $is_num = self::validate(
+            rule: $local_rule,
+            value: $string
+        );
 
         if (!$is_num) {
             return false;
@@ -43,6 +48,9 @@ trait ValidatorStringHelper {
                 break;
         }
 
-        return ValidatorNumeric::validate('num_' . $rule, $casted, [true]);
+        return ValidatorNumeric::validate(
+            rule: 'num_' . $rule,
+            value: $casted
+        );
     }
 }

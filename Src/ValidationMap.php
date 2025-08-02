@@ -1,214 +1,281 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp;
 
-use Neimee8\ValidatorPhp\Enums\ValidationMode;
-use Neimee8\ValidatorPhp\Enums\LogicMode;
-use Neimee8\ValidatorPhp\Enums\ValidationMapType;
+use \Closure;
 
-use Neimee8\ValidatorPhp\Exceptions\ValidationModeException;
-use Neimee8\ValidatorPhp\Exceptions\ValidationMapTypeException;
-use Neimee8\ValidatorPhp\Exceptions\ValidationEntryException;
+use Neimee8\ValidatorPhp\Enums\ValidationMode;
+use Neimee8\ValidatorPhp\Templates\MapTemplate;
+use Neimee8\ValidatorPhp\Templates\ReportTemplate;
+
+use Neimee8\ValidatorPhp\Input\Normalizers\MapNormalizer;
+use Neimee8\ValidatorPhp\Input\Validators\MapValidator;
+use Neimee8\ValidatorPhp\Processors\MapProcessor;
+
 use Neimee8\ValidatorPhp\Exceptions\ValidationException;
 
-class ValidationMap {
-    public const THROW_EXCEPTION = ValidationMode::THROW_EXCEPTION;
-    public const SILENT = ValidationMode::SILENT;
+final class ValidationMap extends ValidationAgent {
+    private array $map;
 
-    public const MAP_INDEXED = ValidationMapType::MAP_INDEXED;
-    public const MAP_ASSOC = ValidationMapType::MAP_ASSOC;
+    protected function init(): void {
+        $this -> map = MapTemplate::getEmpty();
 
-    public const AND = LogicMode::AND;
-    public const OR = LogicMode::OR;
-    public const NOT = LogicMode::NOT;
-    public const XOR = LogicMode::XOR;
+        static::$empty_report = ReportTemplate::getEmpty('map');
+        static::$raw_retrieve_exception = fn() => new ValidationException(
+            message: 'The map contains unprocessed or unvalidated values. '
+                . 'To retrieve them anyway, set allow_raw = true'
+        );
 
-    private array $map = [];
-    private ValidationMapType $map_type;
-    private array $result = [
-        'result' => null,
-        'options' => [],
-        'report' => []
-    ];
+        parent::init();
+    }
 
     public function __construct(
-        ?array $entries = null,
-        ValidationMapType $map_type = self::MAP_ASSOC
+        array|self|null $map = null,
+        ?ValidationMode $validation_mode = null
     ) {
-        if (Validator::value_not_in($map_type, ValidationMapType::cases())) {
-            throw new ValidationMapTypeException(map_type: $map_type);
+        $this -> init();
+
+        if ($validation_mode !== null) {
+            $this -> setValidationMode($validation_mode);
         }
 
-        $this -> map_type = $map_type;
-
-        if ($entries !== null) {
-            $this -> addEntries($entries);
+        if (is_array($map)) {
+            $this -> setMap($map);
+        } elseif ($map instanceof self) {
+            $this -> fromObject($map);
         }
     }
 
-    private static function prepareEntry(array &$entry): void {
+    public function __clone() {
+        foreach ($this -> map as $id => $entry) {
+            $this -> map[$id] = clone $entry;
+        }
+    }
+
+    public function setMap(array $map): void {
+        $map = MapNormalizer::normalizeMap(
+            $map,
+            $this -> validation_mode
+        );
+
+        MapValidator::validateMap($map);
+
+        $this -> map = $map;
+        $this -> ready = true;
+    }
+
+    public function getMap(bool $allow_raw = false): array {
+        return $this -> handleRetrieve(
+            $allow_raw,
+            function(): array {
+                $map_to_retrieve = [];
+
+                foreach ($this -> map as $id => $entry) {
+                    $map_to_retrieve[$id] = clone $entry;
+                }
+
+                return $map_to_retrieve;
+            }
+        );
+    }
+
+    public function clearMap(): void {
+        $this -> map = MapTemplate::getEmpty();
+        $this -> ready = false;
+    }
+
+    public function getEntry(string|int $id): ValidationEntry {
+        if (!$this -> entryExists($id)) {
+            throw new ValidationException('entry not found');
+        }
+
+        return clone $this -> map[$id];
+    }
+
+    public function addEntry(
+        array|ValidationEntry $entry,
+        string|int|null $id = null
+    ): void {
         if (
-            ValidationRules::quickValidate($entry, [
-                ['NOT' => [
-                    ['type' => 'array'],
-                    ['arr_is_indexed' => true],
-                    ['arr_len' => 2]
-                ]]
-            ], ValidationRules::SILENT)['result']
+            $id !== null
+            && $this -> entryExists($id)
         ) {
-            throw new ValidationEntryException(entry: $entry);
+            throw new ValidationException('entry already exists');
         }
 
-        if (!Validator::types($entry[1], [ValidationRules::class, 'array'])) {
-            throw new ValidationEntryException(entry: $entry);
-        }
-
-        if (is_array($entry[1])) {
-            $entry[1] = new ValidationRules($entry[1]);
-        }
-    }
-
-    public function addEntry(array $entry): void {
-        if ($this -> map_type !== self::MAP_INDEXED) {
-            throw new ValidationMapTypeException(
-                message: 'You should use MAP_INDEXED to call this method, used ' . $this -> map_type -> name
-            );
-        }
-
-        self::prepareEntry($entry);
-
-        $this -> map[] = $entry;
-    }
-
-    public function addAssocEntry(int|string $key, array $entry): void {
-        if ($this -> map_type !== self::MAP_ASSOC) {
-            throw new ValidationMapTypeException(
-                message: 'You should use MAP_ASSOC to call this method, used ' . $this -> map_type -> name
-            );
-        }
-
-        self::prepareEntry($entry);
-
-        $this -> map[$key] = $entry;
-    }
-
-    public function addEntries(array $entries): void {
-        foreach ($entries as $key => $entry) {
-            if ($this -> map_type === self::MAP_INDEXED) {
-                $this -> addEntry($entry);
+        $addEntryToMap = function() use ($id, $entry) {
+            if ($id === null) {
+                $this -> map[] = $entry;
             } else {
-                $this -> addAssocEntry($key, $entry);
+                $this -> map[$id] = $entry;
+            }
+
+            $this -> ready = true;
+        };
+
+        if ($entry instanceof ValidationEntry) {
+            if ($entry -> isEmpty()) {
+                throw new ValidationException('entry is empty');
+            } else {
+                $addEntryToMap();
+
+                return;
             }
         }
+
+        $entry = new ValidationEntry(
+            $entry,
+            $this -> validation_mode
+        );
+
+        $addEntryToMap();
     }
 
-    public function clearEntries(): void {
-        $this -> map = [];
-    }
-
-    public function clearEntry(int|string $key): bool {
-        if (!$this -> entryExists($key)) {
-            return false;
+    public function replaceEntry(
+        array|ValidationEntry $entry,
+        string|int $id
+    ): void {
+        if (!$this -> entryExists($id)) {
+            throw new ValidationException('entry not found');
         }
 
-        unset($this -> map[$key]);
-        return true;
-    }
+        if ($entry instanceof ValidationEntry) {
+            if ($entry -> isEmpty()) {
+                throw new ValidationException('entry is empty');
+            } else {
+                $this -> map[$id] = $entry;
 
-    public function getMap(): array {
-        return $this -> map;
-    }
-
-    public function getEntry(int|string $key): ?array {
-        if (!$this -> entryExists($key)) {
-            return null;
+                return;
+            }
         }
 
-        return $this -> map[$key];
+        $this -> map[$id] = new ValidationEntry(
+            $entry,
+            $this -> validation_mode
+        );
     }
 
-    public function getFullResult(): array {
-        return $this -> result;
+    public function useEntry(
+        string|int $id,
+        Closure $handler
+    ): void {
+        if (!$this -> entryExists($id)) {
+            throw new ValidationException('entry not found');
+        }
+
+        $entry = $this -> map[$id];
+        $handler = $handler -> bindTo(null, null);
+
+        $handler($entry);
+
+        if ($entry -> isEmpty()) {
+            $this -> clearEntry($id);
+        }
     }
 
-    public function getResult(): ?bool {
-        return $this -> result['result'];
+    public function useEntryOperand(
+        string|int $id,
+        Closure $handler
+    ): void {
+        if (!$this -> entryExists($id)) {
+            throw new ValidationException('entry not found');
+        }
+
+        $entry = $this -> map[$id];
+        $handler = $handler -> bindTo(null, null);
+
+        $entry -> useOperand($handler);
     }
 
-    public function getOptions(): array {
-        return $this -> result['options'];
+    public function clearEntry(string|int $id): void {
+        if (!$this -> entryExists($id)) {
+            throw new ValidationException('entry not found');
+        }
+
+        unset($this -> map[$id]);
+
+        if ($this -> isEmpty()) {
+            $this -> ready = false;
+        }
     }
 
-    public function getReport(): array {
-        return $this -> result['report'];
+    public function entryExists(string|int $id): bool {
+        return array_key_exists($id, $this -> map);
     }
 
-    public function entryExists(int|string $key): bool {
-        return array_key_exists($key, $this -> map);
+    public function getEntryResult(string|int $id): bool {
+        if (!array_key_exists($id, $this -> report['entries'])) {
+            throw new ValidationException('Entry result not found');
+        }
+
+        return $this -> report['entries'][$id]['result'];
+    }
+
+    public function getEntryReport(string|int $id): array {
+        if (!array_key_exists($id, $this -> report['entries'])) {
+            throw new ValidationException('Entry report not found');
+        }
+
+        return $this -> report['entries'][$id];
+    }
+
+    public function isEmpty(): bool {
+        return MapTemplate::isEmpty($this -> map);
     }
 
     public function validate(
-        ValidationMode $validation_mode = self::THROW_EXCEPTION,
-        ?LogicMode $default_logic_mode = null
-    ): array {
-        if (Validator::value_not_in($validation_mode, ValidationMode::cases())) {
-            throw new ValidationModeException(validation_mode: $validation_mode);
+        bool $force_validation_mode = true,
+        bool $collect_detailed = true,
+        bool $return_report = false
+    ): bool|array {
+        $this -> clearReport();
+
+        if ($this -> isEmpty()) {
+            throw new ValidationException('Entry is empty');
         }
 
-        $this -> result = [
-            'result' => null,
-            'options' => [
-                'validation_mode' => $validation_mode -> name,
-                'default_logic_mode' => $default_logic_mode !== null 
-                    ? $default_logic_mode -> name
-                    : self::AND -> name,
-                'map_type' => $this -> map_type -> name
-            ],
-            'report' => []
-        ];
-
-        if ($this -> map === []) {
-            return $this -> result;
+        if (!$this -> isReady()) {
+            MapValidator::validateMap($this -> map);
         }
 
-        foreach ($this -> map as $key => $entry) {
-            $validation_result = true;
+        $processed = MapProcessor::process(
+            $this -> map,
+            $this -> validation_mode,
+            $force_validation_mode,
+            $collect_detailed
+        );
 
-            try {
-                $validation_result = $entry[1] -> validate(
-                    $entry[0],
-                    $validation_mode,
-                    $default_logic_mode
-                );
-            } catch (ValidationException $e) {
-                $this -> result['result'] = false;
-                $this -> result['report'][$key] = $validation_result['report'];
+        $this -> report = $processed['report'];
 
-                throw $e;
-            }
-
-            if (!$validation_result['result']) {
-                $this -> result['result'] = false;
-            }
-
-            $this -> result['report'][$key] = $validation_result['report'];
+        if ($processed['exception'] !== null) {
+            throw $processed['exception'];
         }
 
-        if ($this -> result['result'] === null) {
-            $this -> result['result'] = true;
-        }
-
-        return $this -> result;
+        return $return_report
+            ? $this -> getReport()
+            : $this -> getResult();
     }
 
     public static function quickValidate(
-        array $entries,
-        ValidationMapType $map_type = self::MAP_ASSOC,
-        ValidationMode $validation_mode = self::THROW_EXCEPTION,
-        ?LogicMode $default_logic_mode = null
-    ): array {
-        $instance = new self($entries, $map_type);
+        array|self $map,
+        ?ValidationMode $validation_mode = null,
+        bool $force_validation_mode = true,
+        bool $collect_detailed = true,
+        bool $return_report = false
+    ): bool|array {
+        $instance = $map instanceof self
+            ? $map
+            : new self(
+                $map,
+                $validation_mode
+            );
 
-        return $instance -> validate($validation_mode, $default_logic_mode);
+        return $instance -> validate(
+            $force_validation_mode,
+            $collect_detailed,
+            $return_report
+        );
     }
 }

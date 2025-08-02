@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Exceptions;
 
-use Neimee8\ValidatorPhp\SchemaManager;
+use Neimee8\ValidatorPhp\Schemas\SchemaManager;
 
-class ValidationValueException extends ValidationException {
+final class ValidationValueException extends ValidationException {
     public function __construct(
         string $message = '',
         int $code = self::CODE_INVALID_VALUE_TYPE,

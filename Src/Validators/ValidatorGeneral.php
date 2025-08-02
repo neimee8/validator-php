@@ -1,72 +1,70 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Validators;
 
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorInterface;
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorHelper;
 
-class ValidatorGeneral implements ValidatorInterface {
-    use ValidationInvoker;
+final class ValidatorGeneral {
+    use ValidatorHelper;
 
     private static function types(mixed $value, array $params): bool {
-        $given_types = $params[0]; // array with data types or classes
-
-        if (in_array('mixed', $given_types, strict: true)) {
+        if (in_array('mixed', $params['types'], strict: true)) {
             return true;
         }
 
         $unique_types = [];
 
-        foreach ($given_types as $type) {
+        foreach ($params['types'] as $type) {
             if (str_starts_with($type, '?')) {
-                $unique_types[] = 'null';
-                $unique_types[] = substr($type, 1);
+                $unique_types['null'] = 'null';
+                $unique_types[substr($type, 1)] = substr($type, 1);
             } else {
-                $unique_types[] = $type;
+                $unique_types[$type] = $type;
             }
         }
 
-        $unique_types = array_unique($unique_types);
         $value_types = [];
 
         if (is_int($value)) {
-            $value_types[] = 'int';
+            $value_types['int'] = 'int';
         } 
         
         if (is_float($value)) {
-            $value_types[] = 'float';
+            $value_types['float'] = 'float';
         } 
         
         if (is_string($value)) {
-            $value_types[] = 'string';
+            $value_types['string'] = 'string';
         } 
         
         if (is_bool($value)) {
-            $value_types[] = 'bool';
+            $value_types['bool'] = 'bool';
         } 
         
         if (is_array($value)) {
-            $value_types[] = 'array';
+            $value_types['array'] = 'array';
         } 
         
         if (is_callable($value)) {
-            $value_types[] = 'callable';
+            $value_types['callable'] = 'callable';
         } 
         
         if (is_object($value)) {
-            $value_types[] = 'object';
+            $value_types['object'] = 'object';
         } 
         
         if (is_resource($value)) {
-            $value_types[] = 'resource';
+            $value_types['resource'] = 'resource';
         } 
         
         if (is_iterable($value)) {
-            $value_types[] = 'iterable';
+            $value_types['iterable'] = 'iterable';
         } 
         
         if ($value === null) {
-            $value_types[] = 'null';
+            $value_types['null'] = 'null';
         }
 
         if (count(array_intersect($value_types, $unique_types)) > 0) {
@@ -87,26 +85,20 @@ class ValidatorGeneral implements ValidatorInterface {
     }
 
     private static function type(mixed $value, array $params): bool {
-        $type = $params[0]; // string type
-
-        return self::types($value, [[$type]]);
-    }
-
-    private static function not_types(mixed $value, array $params): bool {
-        return !self::types($value, $params);
-    }
-
-    private static function not_type(mixed $value, array $params): bool {
-        return !self::type($value, $params);
+        return self::validate(
+            rule: 'types',
+            value: $value,
+            params: ['types' => [$params['type']]]
+        );
     }
 
     private static function value_in(mixed $value, array $params): bool {
-        $haystack = $params[0]; // array
-
-        return in_array($value, $haystack, strict: true);
+        return in_array($value, $params['haystack'], $params['strict']);
     }
 
-    private static function value_not_in(mixed $value, array $params): bool {
-        return !self::value_in($value, $params);
+    private static function equals(mixed $value, array $params): bool {
+        return $params['strict']
+            ? $value === $params['reference']
+            : $value == $params['reference'];
     }
 }

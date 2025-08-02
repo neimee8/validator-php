@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Exceptions;
 
 use Neimee8\ValidatorPhp\Enums\LogicMode;
 
-class ValidationLogicModeException extends ValidationException {
+final class ValidationLogicModeException extends ValidationException {
     public function __construct(
         string $message = '',
         int $code = self::CODE_INVALID_LOGIC_MODE,

@@ -1,20 +1,29 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Validators;
 
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidationInvoker;
-use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorInterface;
+use Neimee8\ValidatorPhp\Validators\Helpers\ValidatorHelper;
 
-class ValidatorResource implements ValidatorInterface {
-    use ValidationInvoker;
+final class ValidatorResource {
+    use ValidatorHelper;
 
-    private static function resource_type_match($value, array $params): bool {
-        $type = $params[0]; // string
+    private static function res_types($value, array $params): bool {
+        foreach ($params['types'] as $type) {
+            if (get_resource_type($value) === $type) {
+                return true;
+            }
+        }
 
-        return get_resource_type($value) === $type;
+        return false;
     }
 
-    private static function resource_type_not_match($value, array $params): bool {
-        return !self::resource_type_match($value, $params);
+    private static function res_type($value, array $params): bool {
+        return self::validate(
+            rule: 'res_types',
+            value: $value,
+            params: ['types' => [$params['type']]]
+        );
     }
 }

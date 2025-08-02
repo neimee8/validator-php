@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Exceptions;
 
 use \Exception;
@@ -16,7 +18,7 @@ class ValidationException extends Exception {
     public const CODE_INVALID_ENTRY = 1007;
     public const CODE_INVALID_RULE_PATH = 1008;
     public const CODE_INVALID_LOGIC_MODE = 1009;
-    public const CODE_INVALID_RULE_NODE = 1010;
+    public const CODE_INVALID_NODE = 1010;
 
     public const CODE_SCHEMA_FILE_NOT_FOUND = 2001;
 
@@ -30,7 +32,7 @@ class ValidationException extends Exception {
     public mixed $entry;
     public mixed $rule_path;
     public mixed $logic_mode;
-    public mixed $rule_node;
+    public mixed $node;
 
     public string $exception = 'ValidationException';
 
@@ -49,7 +51,7 @@ class ValidationException extends Exception {
         mixed $entry = null,
         mixed $rule_path = null,
         mixed $logic_mode = null,
-        mixed $rule_node = null
+        mixed $node = null
     ) {
         $this -> rule = $rule;
         $this -> rule_group = $rule_group;
@@ -62,7 +64,7 @@ class ValidationException extends Exception {
         $this -> entry = $entry;
         $this -> rule_path = $rule_path;
         $this -> logic_mode = $logic_mode;
-        $this -> rule_node = $rule_node;
+        $this -> node = $node;
 
         $this -> message = $message === '' ? $this -> exception : $message;
 
@@ -114,8 +116,8 @@ class ValidationException extends Exception {
             $response['logic_mode'] = $this -> logic_mode;
         }
 
-        if ($this -> rule_node !== null) {
-            $response['rule_node'] = $this -> rule_node;
+        if ($this -> node !== null) {
+            $response['node'] = $this -> node;
         }
 
         $response['exception'] = $this -> exception;
@@ -128,9 +130,9 @@ class ValidationException extends Exception {
     }
 
     public function __toString(): string {
-        $response = 'Exception: ' . $this -> exception . '. ';
-        $response .= 'Code: ' . $this -> code . '. ';
-        $response .= 'Message: ' . $this -> message;
+        $response = 'Exception: ' . $this -> exception . ". \n";
+        $response .= 'Code: ' . $this -> code . ". \n";
+        $response .= "Message: \n" . $this -> message;
 
         return $response;
     }

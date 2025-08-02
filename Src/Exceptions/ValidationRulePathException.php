@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Neimee8\ValidatorPhp\Exceptions;
 
-class ValidationRulePathException extends ValidationException {
+final class ValidationRulePathException extends ValidationException {
     public function __construct(
         string $message = '',
         int $code = self::CODE_INVALID_RULE_PATH,

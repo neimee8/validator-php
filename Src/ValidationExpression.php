@@ -35,6 +35,7 @@ final class ValidationExpression extends ValidationAgent {
         array|self|null $expression = null,
         string $logic = 'all',
         ?array $operands = null,
+        ?bool $invert = null,
         ?ValidationMode $validation_mode = null
     ) {
         $this -> init();
@@ -53,6 +54,10 @@ final class ValidationExpression extends ValidationAgent {
 
         if ($operands !== null) {
             $this -> setOperands($expression);
+        }
+
+        if ($invert !== null) {
+            $this -> setInvertion($invert);
         }
     }
 

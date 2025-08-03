@@ -329,6 +329,24 @@ $map -> validate(
 );
 ```
 
+Behaivor:
+* Validation is performed independently for each `ValidationEntry` in the map.
+* The overall result of `validate()` is:
+    * `true` only if all entries pass (logical `AND` across all entries).
+    * `false` if any single entry fails.
+
+---
+
+### 📃 Planned
+* Flexible logic modes for `ValidationMap`
+    * Implement support for logical composition (`all`, `any`, `one`, `none`) similar to `ValidationExpression`
+    * Allow nested logic trees inside the map structure
+* Informative exception handling
+* Code refactoring
+* Unit testing
+* Full documentation
+* Generate `PHPDoc` with typed annotations for IDE autocompletion
+
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 

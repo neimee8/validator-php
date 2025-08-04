@@ -346,6 +346,7 @@ Behaivor:
 * Unit testing
 * Full documentation
 * Generate `PHPDoc` with typed annotations for IDE autocompletion
+* Composer release
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)

@@ -47,8 +47,9 @@ You can instantiate a `ValidationNode` using:
   ```
   `validation_mode` controls behavior when the validated value is incompatible with the rule's expected type:
   * `DISALLOW_INCOMPATIBLE_VALUE` – throws an exception on incompatible types (default)
-  * `ALLOW_INCOMPATIBLE_VALUE` – silently returns false
-  These modes are available on all ValidationAgent subclasses.
+  * `ALLOW_INCOMPATIBLE_VALUE` – silently returns `false`
+
+  These modes are available on all `ValidationAgent` subclasses.
 
 #### ⚙️ Configuration methods
 You can also configure a ValidationNode after instantiation:

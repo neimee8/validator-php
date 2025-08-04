@@ -43,11 +43,11 @@ You can instantiate a `ValidationNode` using:
   ```
 4. Validation mode
   ```php
-  new ValidationNode(..., validation_mode: ValidationNode::DISALLOW_INCOMPATIBLE_VALUE);
+  new ValidationNode(..., validation_mode: ValidationNode::DISALLOW_INCOMPATIBLE_VALUES);
   ```
   `validation_mode` controls behavior when the validated value is incompatible with the rule's expected type:
-  * `DISALLOW_INCOMPATIBLE_VALUE` – throws an exception on incompatible types (default)
-  * `ALLOW_INCOMPATIBLE_VALUE` – silently returns `false`
+  * `DISALLOW_INCOMPATIBLE_VALUES` – throws an exception on incompatible types (default)
+  * `ALLOW_INCOMPATIBLE_VALUES` – silently returns `false`
 
   These modes are available on all `ValidationAgent` subclasses.
 
@@ -55,7 +55,7 @@ You can instantiate a `ValidationNode` using:
 You can also configure a ValidationNode after instantiation:
 
 ```php
-$node = new ValdiationNode();
+$node = new ValidationNode();
 $node -> setNode([
     'rule' => 'value_in',
     'params' => [
@@ -108,7 +108,7 @@ You can instantiate a `ValidationExpression` using:
 
 1. Associative format:
   ```php
-  new ValidaitonExpression(
+  new ValidationExpression(
       expression: [
           'logic' => 'all',
           'operands' => [
@@ -124,7 +124,7 @@ You can instantiate a `ValidationExpression` using:
   ```
 2. Indexed format:
   ```php
-  new ValidaitonExpression(
+  new ValidationExpression(
       expression: [
           'all',
           [
@@ -150,7 +150,7 @@ You can instantiate a `ValidationExpression` using:
           ]],
       ],
       invert: true,
-      valdiation_mode: ValidationExpression::ALLOW_INCOMPATIBLE_VALUE
+      valdiation_mode: ValidationExpression::ALLOW_INCOMPATIBLE_VALUES
   );
   ```
   `invert` is optional and defaults to `false`.

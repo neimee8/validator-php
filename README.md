@@ -186,9 +186,9 @@ $expr -> setInvertion(true);
 $expr -> validate($value);
 ```
 Additional parameters:
-* `return_report` (default: `false`). Returns a full report if set to true.
+* `return_report` (default: `false`). Returns a full report if set to `true`.
 * `collect_detailed` (default: `true`). Controls whether reports from individual operands (nodes or nested expressions) are collected. If set to `false`, avoids recursive report aggregation to improve performance.
-* `force_validation_mode` (default: `true`). Temporarily overrides the validation_mode of all nested operands for a single validation call.
+* `force_validation_mode` (default: `true`). Temporarily overrides the `validation_mode` of all nested operands for a single validation call.
 
 ---
 
@@ -256,7 +256,7 @@ $entry -> setOperand(...);
 $entry -> validate(
     return_report: false,
     collect_detailed: true,
-    force_validation_mode: ValidationEntry::DISALLOW_INCOMPATIBLE_VALUE
+    force_validation_mode: true
 );
 ```
 
@@ -326,7 +326,7 @@ $map -> clearEntry('email');
 $map -> validate(
     return_report: false,
     collect_detailed: true,
-    force_validation_mode: ValidationMap::DISALLOW_INCOMPATIBLE_VALUE
+    force_validation_mode: true
 );
 ```
 

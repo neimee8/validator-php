@@ -330,7 +330,7 @@ $map -> validate(
 );
 ```
 
-Behaivor:
+Behavior:
 * Validation is performed independently for each `ValidationEntry` in the map.
 * The overall result of `validate()` is:
     * `true` only if all entries pass (logical `AND` across all entries).
